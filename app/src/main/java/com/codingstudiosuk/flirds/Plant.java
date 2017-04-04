@@ -10,6 +10,13 @@ class Plant extends Entity {
         size = v.inte(v.random(5, 25));
         fill.setARGB(255, 75, 150, 0);
     }
+    Plant(SimView s, float x, float y, float si){
+        super(s);
+        aggro = -23;
+        size = si;
+        fill.setARGB(255, 75, 150, 0);
+        pos.x = x; pos.y = y;
+    }
 
     void run(){
         interact();

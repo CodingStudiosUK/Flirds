@@ -24,7 +24,7 @@ public class FullscreenActivity extends AppCompatActivity {
     SimView simview;
     private TextView debug_text;
     String[] debugInfo = {"FPS: 0", "\nPopulation: 0","\nBest flird: 23",
-            "\nAve. speedMove: 0\n (0-0)", "\nAve. moveTurn: 0\n (0-0)", "\nAve. hunger: 0\n (0-0)",
+            "No. of generations: 0", "\nAve. speedMove: 0\n (0-0)", "\nAve. moveTurn: 0\n (0-0)", "\nAve. hunger: 0\n (0-0)",
             "\nAve. size: 0\n (0-0)", "\nAve. aggro: 0 (0)\n (0-0) 0 \n (0-0) 0"};
 
     @Override
