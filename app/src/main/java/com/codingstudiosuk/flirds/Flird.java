@@ -71,11 +71,11 @@ class Flird extends Entity{
         thresh[0] = getCode(5, 0.1f, 0.45f);
         thresh[1] = getCode(6, 0.55f, 0.9f);
         intel = v.inte(getCode(7,5,21));
-        if (v.random(1)>0.9){
-            type = v.inte(v.random(0, 3));
+        if (v.random(1)>0.8){
+            type = v.inte(v.random(0, 1));
         }
         else{
-            type = v.inte(v.constrain(aggro/33, 0, 2));
+            type = v.inte(v.constrain(aggro/50, 0, 1));
         }
         uuid = v.num;
         v.num++;
@@ -230,13 +230,21 @@ class Flird extends Entity{
         health -= hunger;
         if (health <= 0){
             dead = true;
+            dropFood();
         }
         fill.setARGB((int)v.map(health,0,1,0,255), 150, 75, 0);
         for (int i = 0; i < v.flock.size(); i++){
             Flird f = v.flock.get(i);
-            if (dist(f) <= size+f.size && f.aggro > aggro+5 && this != f){
-                dead = true;
+            if (dist(f) <= size+f.size && this != f){
+                f.health-=aggro/150;
             }
+        }
+    }
+
+    void dropFood(){
+        int ranAmount = v.inte(v.random(0, 10));
+        for(int i = 0; i < ranAmount; i++) {
+            v.plants.add(new Plant(v, pos.x + v.random(-v.width * 0.01f, v.width * 0.01f), pos.y + v.random(-v.width * 0.01f, v.width * 0.01f), size/ranAmount+v.random(-1f, 1f)));
         }
     }
 

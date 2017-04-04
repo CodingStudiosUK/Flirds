@@ -1,8 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        TestBuildKeys {
+            keyAlias 'testKeys'
+            keyPassword 'cal3bow3n'
+            storePassword 'cal3bow3n'
+        }
+        StableBuildKeys {
+            keyAlias 'stableKeys'
+            keyPassword 'cal3bow3n2'
+            storePassword 'cal3bow3n2'
+        }
+    }
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.codingstudiosuk.flirds"
         minSdkVersion 18
@@ -16,11 +28,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+        }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

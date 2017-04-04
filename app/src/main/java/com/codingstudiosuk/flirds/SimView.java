@@ -18,7 +18,7 @@ public class SimView extends View {
     public ArrayList<Flird> flock = new ArrayList<>();
     public ArrayList<Plant> plants = new ArrayList<>();
     public int width = 1, height = 1, diag;
-    int num = 0;
+    int num = 0, numGens = 0;
     public long frameFPS, timeFPS, frameCount;
     public int[][] code = new int[8][3];
     public boolean setup = true;
@@ -133,16 +133,17 @@ public class SimView extends View {
             fullscreenActivity.debugInfo[0] = "FPS: "+fps;
             fullscreenActivity.debugInfo[1] = "\nPopulation: "+flock.size();
             fullscreenActivity.debugInfo[2] = "\nBest flird: "+flock.get(0).uuid;
-            fullscreenActivity.debugInfo[3] = "\nspeedMove: "+averages[0]+"\n ("+min[0]+"-"+max[0]+")";
-            fullscreenActivity.debugInfo[4] = "\nspeedTurn: "+averages[1]+"\n ("+min[1]+"-"+max[1]+")";
-            fullscreenActivity.debugInfo[5] = "\nhunger: "+averages[2]+"\n ("+min[2]+"-"+max[2]+")";
-            fullscreenActivity.debugInfo[6] = "\nsize: "+averages[3]+"\n ("+min[3]+"-"+max[3]+")";
-            fullscreenActivity.debugInfo[7] = "\naggro: "+averages[4];
-            fullscreenActivity.debugInfo[7] +="\n "+aggroRange[Math.round(aggroRange.length*0.5f)];
-            fullscreenActivity.debugInfo[7] +="\n "+min[4]+"-"+max[4];
-            fullscreenActivity.debugInfo[7] +="\n "+(max[4]-min[4]);
-            fullscreenActivity.debugInfo[7] +="\n "+aggroRange[Math.round(aggroRange.length*0.25f)]+"-"+aggroRange[Math.round(aggroRange.length*0.75f)];
-            fullscreenActivity.debugInfo[7] +="\n "+(aggroRange[Math.round(aggroRange.length*0.75f)]-aggroRange[Math.round(aggroRange.length*0.25f)]);
+            fullscreenActivity.debugInfo[3] = "\nNo. of generations: "+numGens;
+            fullscreenActivity.debugInfo[4] = "\nspeedMove: "+averages[0]+"\n ("+min[0]+"-"+max[0]+")";
+            fullscreenActivity.debugInfo[5] = "\nspeedTurn: "+averages[1]+"\n ("+min[1]+"-"+max[1]+")";
+            fullscreenActivity.debugInfo[6] = "\nhunger: "+averages[2]+"\n ("+min[2]+"-"+max[2]+")";
+            fullscreenActivity.debugInfo[7] = "\nsize: "+averages[3]+"\n ("+min[3]+"-"+max[3]+")";
+            fullscreenActivity.debugInfo[8] = "\naggro: "+averages[4];
+            fullscreenActivity.debugInfo[8] +="\n "+aggroRange[Math.round(aggroRange.length*0.5f)];
+            fullscreenActivity.debugInfo[8] +="\n "+min[4]+"-"+max[4];
+            fullscreenActivity.debugInfo[8] +="\n "+(max[4]-min[4]);
+            fullscreenActivity.debugInfo[8] +="\n "+aggroRange[Math.round(aggroRange.length*0.25f)]+"-"+aggroRange[Math.round(aggroRange.length*0.75f)];
+            fullscreenActivity.debugInfo[8] +="\n "+(aggroRange[Math.round(aggroRange.length*0.75f)]-aggroRange[Math.round(aggroRange.length*0.25f)]);
             fullscreenActivity.setNavDrawer();
             frameFPS = 0;
             timeFPS = SystemClock.elapsedRealtime();
@@ -179,6 +180,7 @@ public class SimView extends View {
         return n;
     }
     public void breed(){
+        numGens++;
         ArrayList<Flird> newFlock = new ArrayList<>();
         for(int i = 0; i < 100; i++){
             newFlock.add(new Flird(this, flock.get(inte(random(0, flock.size()-1))), flock.get(inte(random(0, flock.size()-1)))));
