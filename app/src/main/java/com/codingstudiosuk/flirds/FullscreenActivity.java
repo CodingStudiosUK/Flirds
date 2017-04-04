@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,12 +22,12 @@ public class FullscreenActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    Button debug_advanced;
     SimView simview;
-    private TextView debug_text;
+    private TextView debug_text, debug_dna;
     String[] debugInfo = {"FPS: 0", "Population: 0","Best flird: 23",
             "No. of generations: 0", "\nAve. speedMove: 0\n (0-0)", "\nAve. moveTurn: 0\n (0-0)", "\nAve. hunger: 0\n (0-0)",
             "\nAve. size: 0\n (0-0)", "\nAve. aggro: 0 (0)\n (0-0) 0 \n (0-0) 0"}; //String array used to display basic debugging info
+    String[] advancedDebugInfo = {"CHROMOSOMES\n", "SpeedMove: 0,0,0", "SpeedTurn: 0,0,0", "Hunger: 0,0,0", "Size: 0,0,0", "Aggro: 0,0,0"}; //String array used to display basic debugging info
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { //Called when activity is created
@@ -34,7 +36,7 @@ public class FullscreenActivity extends AppCompatActivity {
         simview = (SimView)findViewById(R.id.anim_view); //Get the View object
         simview.fullscreenActivity = this; //Pass a reference to this activity
         debug_text = (TextView)findViewById(R.id.debug_basic); //Grab some textviews
-        debug_advanced = (Button)findViewById(R.id.button_debug_advanced); //Advanced debugging button
+        debug_dna = (TextView)findViewById(R.id.debug_dna);
 //        debug_advanced.setOnClickListener(new View.OnClickListener() { //Some code to start an activity
 //            public void onClick(View v) {
 //                activityStart(DebugActivity.class, simview.flock);
@@ -50,6 +52,9 @@ public class FullscreenActivity extends AppCompatActivity {
         String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
         t = t.substring(1, t.length()-1).replaceAll(",", "\n"); //Each element is on a new line
         debug_text.setText(t); //Set the text of the textview
+        t = Arrays.toString(advancedDebugInfo); //Convert debugInfo array to a string
+        t = t.substring(1, t.length()-1).replaceAll(",", "\n"); //Each element is on a new line
+        debug_dna.setText(t); //Set the text of the textview
         mDrawerToggle = new ActionBarDrawerToggle( //Create a new toggle for opening/closing the drawer
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */

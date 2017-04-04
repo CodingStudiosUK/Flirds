@@ -6,10 +6,13 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
+import static android.content.ContentValues.TAG;
 
 public class SimView extends View { //The canvas used to draw the flirds
 
@@ -144,6 +147,15 @@ public class SimView extends View { //The canvas used to draw the flirds
             fullscreenActivity.debugInfo[8] +="\n Range: "+(max[4]-min[4]);
             fullscreenActivity.debugInfo[8] +="\n LQ-UQ: "+aggroRange[Math.round(aggroRange.length*0.25f)]+"-"+aggroRange[Math.round(aggroRange.length*0.75f)];
             fullscreenActivity.debugInfo[8] +="\n Diff: "+(aggroRange[Math.round(aggroRange.length*0.75f)]-aggroRange[Math.round(aggroRange.length*0.25f)]);
+            //Set stuff for right nav drawer
+            for(int i = 1; i < fullscreenActivity.advancedDebugInfo.length; i++) {
+                String t = Arrays.toString(code[i]);
+                t = t.substring(1, t.length()-1).replaceAll(" ", "").replaceAll(",", ".");
+                System.out.println("onDraw: "+t);
+                String x = fullscreenActivity.advancedDebugInfo[i];
+                x = x.subSequence(0, x.length()-5) + t;
+                fullscreenActivity.advancedDebugInfo[i] = x;
+            }
             fullscreenActivity.setNavDrawer();
             frameFPS = 0;
             timeFPS = SystemClock.elapsedRealtime();

@@ -17,6 +17,7 @@ class Flird extends Entity{
     private float[] thresh = new float[2];
     private int type;
     private int choice;
+    private int mateCoolDown = 0;
     transient private Entity closePrey, closeMate, closePred, closeAll;
 
     Flird(SimView s){
@@ -74,6 +75,11 @@ class Flird extends Entity{
         }
     }
 
+    Flird(SimView s, Flird a, Flird b, float x, float y) {
+        this(s, a, b);
+        pos.x = x; pos.y = y;
+    }
+
     private void getCodes(){
         speedMove = getCode(0,5,15);
         speedTurn = getCode(1,2,6);
@@ -105,6 +111,7 @@ class Flird extends Entity{
         decide();
         movement();
         interact();
+        if(mateCoolDown>0) mateCoolDown--;
     }
 
     private void target() {
@@ -248,7 +255,11 @@ class Flird extends Entity{
         for (int i = 0; i < v.flock.size(); i++){
             Flird f = v.flock.get(i);
             if (dist(f) <= size+f.size && this != f){
-                f.health-=aggro/150;
+                if(choice==2 && v.flock.size()<75 && mateCoolDown==0 && v.random(1) < 0.5f) {
+                    v.flock.add(new Flird(v, this, f, pos.x + size + v.width * 0.1f, pos.y));
+                    mateCoolDown = 1200;
+                }
+                else f.health -= aggro / 150;
             }
         }
     }
@@ -269,7 +280,7 @@ class Flird extends Entity{
     }
 
     private float sig(float val) {
-        return (float)(1/(1+Math.pow((float)Math.E, -(val*0.5f)))); //To do: map sig functions to find the most effective
+        return (float)(1/(1+Math.pow((float)Math.E, -(val*0.8f)))); //To do: map sig functions to find the most effective
     }
 
 }

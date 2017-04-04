@@ -32,13 +32,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/debug_basic"
             android:layout_weight="1"/>
-
-        <Button
-            android:text="Advanced\nDebug\ninfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_debug_advanced"
-            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout android:id="@+id/right_drawer"
@@ -52,17 +45,10 @@
 
         <TextView
             android:text="TextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/debug_basic2"
+            android:id="@+id/debug_dna"
             android:layout_weight="1"/>
-
-        <Button
-            android:text="Advanced\nDebug\ninfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_debug_advanced2"
-            android:layout_weight="1" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
