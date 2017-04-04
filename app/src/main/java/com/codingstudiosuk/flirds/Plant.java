@@ -9,13 +9,29 @@ class Plant extends Entity {
         aggro = -10;
         size = v.inte(v.random(5, 25));
         fill.setARGB(255, 75, 150, 0);
+        isSafe();
     }
     Plant(SimView s, float x, float y, float si){
         super(s);
         aggro = -23;
         size = si;
-        fill.setARGB(255, 75, 150, 0);
+        fill.setARGB(255, 200, 120, 0);
         pos.x = x; pos.y = y;
+    }
+
+    void isSafe() {
+        while(true) {
+            boolean safe = true;
+            for (int i = 0; i < v.plants.size(); i++) {
+                Plant f = v.plants.get(i);
+                if (dist(f) < size + f.size) {
+                    safe = false;
+                    break;
+                }
+            }
+            if(safe){break;}
+            pos = new Vector(v.random(0, v.width), v.random(0, v.height));
+        }
     }
 
     void run(){
@@ -28,6 +44,10 @@ class Plant extends Entity {
             if (dist(f) <= size+f.size){
                 dead = true;
             }
+        }
+        size*=0.999f;
+        if(size < 0.1){
+            dead = true;
         }
     }
 

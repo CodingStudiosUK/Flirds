@@ -60,6 +60,18 @@ class Flird extends Entity{
             dna[v.code[4][2]] = (byte)v.random(-128,127);
         }
         getCodes();
+        while(true) {
+            boolean safe = true;
+            for (int i = 0; i < v.flock.size(); i++) {
+                Flird f = v.flock.get(i);
+                if (dist(f) < size + f.size) {
+                    safe = false;
+                    break;
+                }
+            }
+            if(safe){break;}
+            pos = new Vector(v.random(0, v.width), v.random(0, v.height));
+        }
     }
 
     private void getCodes(){
@@ -139,7 +151,7 @@ class Flird extends Entity{
         float[][] nodeVals = new float[3][5];
         nodeVals[0][0] = 1; // Bias - test with different values
         nodeVals[0][1] = health; // Hunger
-        nodeVals[0][2] = v.map(closeAll.aggro-aggro,-110,100,0,1); // Closest Flird type
+        nodeVals[0][2] = v.map(closeAll.aggro-aggro,-123,100,1,0); // Closest Flird type
         nodeVals[0][3] = v.map(aggro, 0, 100, 1, 0); // Inverse of aggro
         for (int j = 0; j < 5; j++) {
             nodeVals[1][j] = 0;
@@ -242,9 +254,9 @@ class Flird extends Entity{
     }
 
     void dropFood(){
-        int ranAmount = v.inte(v.random(0, 10));
+        int ranAmount = v.inte(v.random(1, 10));
         for(int i = 0; i < ranAmount; i++) {
-            v.plants.add(new Plant(v, pos.x + v.random(-v.width * 0.01f, v.width * 0.01f), pos.y + v.random(-v.width * 0.01f, v.width * 0.01f), size/ranAmount+v.random(-1f, 1f)));
+            v.plants.add(new Plant(v, pos.x + v.random(-v.width * 0.05f, v.width * 0.05f), pos.y + v.random(-v.width * 0.05f, v.width * 0.05f), size/ranAmount+v.random(-1f, 1f)));
         }
     }
 
