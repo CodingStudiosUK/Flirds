@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "695618188457",
+    "firebase_url": "https://flirds-e16c7.firebaseio.com",
+    "project_id": "flirds-e16c7",
+    "storage_bucket": "flirds-e16c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695618188457:android:46994359feeb3eb4",
+        "android_client_info": {
+          "package_name": "com.codingstudiosuk.flirds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695618188457-ipgd2f8rvlkcqm3pr82kucpuer56n3v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf36pAgkHrBXU0tDmPlC-9a0gH1d9nRZI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
