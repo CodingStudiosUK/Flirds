@@ -13,13 +13,13 @@ class Plant extends Entity {
     }
     Plant(SimView s, float x, float y, float si){
         super(s);
-        aggro = -23;
+        aggro = -10;
         size = si;
         fill.setARGB(255, 200, 120, 0);
         pos.x = x; pos.y = y;
     }
 
-    void isSafe() {
+    private void isSafe() {
         while(true) {
             boolean safe = true;
             for (int i = 0; i < v.plants.size(); i++) {
@@ -45,7 +45,7 @@ class Plant extends Entity {
                 dead = true;
             }
         }
-        size*=0.999f;
+        size*=0.998f;
         if(size < 0.1){
             dead = true;
         }

@@ -32,7 +32,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="This is tab 1"
+                        android:text="@string/text_tab1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tab1_text" />
@@ -45,7 +45,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="This is tab 2"
+                        android:text="@string/text_tab2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tab2_text" />
@@ -58,7 +58,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="This is tab 3"
+                        android:text="@string/text_tab3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tab3_text" />
@@ -70,7 +70,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="This is tab 4"
+                        android:text="@string/text_tab4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tab4_text" />

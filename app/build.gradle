@@ -4,13 +4,13 @@ android {
     signingConfigs {
         TestBuildKeys {
             keyAlias 'testKeys'
-            keyPassword 'cal3bow3n'
-            storePassword 'cal3bow3n'
+            keyPassword 'abcefgh'
+            storePassword 'abcdefgh'
         }
         StableBuildKeys {
             keyAlias 'stableKeys'
-            keyPassword 'cal3bow3n2'
-            storePassword 'cal3bow3n2'
+            keyPassword 'abcefgh'
+            storePassword 'abcdefgh'
         }
     }
     compileSdkVersion 25
@@ -27,8 +27,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.StableBuildKeys
         }
         debug {
+            debuggable true
         }
     }
 

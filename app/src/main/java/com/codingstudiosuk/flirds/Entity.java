@@ -27,5 +27,6 @@ class Entity {
         }
         return (float)Math.sqrt(Math.pow(xDist,2)+Math.pow(yDist,2));
     }
+   
 
 }

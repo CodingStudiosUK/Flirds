@@ -6,13 +6,10 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-
-import static android.content.ContentValues.TAG;
 
 public class SimView extends View { //The canvas used to draw the flirds
 
@@ -27,6 +24,7 @@ public class SimView extends View { //The canvas used to draw the flirds
     public boolean setup = true; //Make sure init function is only called once (damn you canvas)
     FullscreenActivity fullscreenActivity; //A ference to the main activity
     float averages[] = new float[5]; //speedmove, speedturn, hunger, size, aggro //Used to display the averages, debugging
+    public Random random = new Random();
 
     public void setup() { //Init function
         frameCount = 0; //Reset some stuff
@@ -47,7 +45,7 @@ public class SimView extends View { //The canvas used to draw the flirds
                     code[i][2] = inte(random(0, 8));
                 }
             }
-            for (int i = 0; i < 150; i++) { //Create a bunch of new Flirds and plants
+            for (int i = 0; i < 120; i++) { //Create a bunch of new Flirds and plants
                 flock.add(new Flird(this));
             }
             for (int i = 0; i < inte(random(75, 150)); i++) {
@@ -90,7 +88,7 @@ public class SimView extends View { //The canvas used to draw the flirds
             if (flock.get(i).dead) {
                 flock.remove(i);
                 if(flock.size() == 20){
-                    breedNew();
+                    breed();
                 }
             }
         }
@@ -151,7 +149,6 @@ public class SimView extends View { //The canvas used to draw the flirds
             for(int i = 1; i < fullscreenActivity.advancedDebugInfo.length; i++) {
                 String t = Arrays.toString(code[i]);
                 t = t.substring(1, t.length()-1).replaceAll(" ", "").replaceAll(",", ".");
-                System.out.println("onDraw: "+t);
                 String x = fullscreenActivity.advancedDebugInfo[i];
                 x = x.subSequence(0, x.length()-5) + t;
                 fullscreenActivity.advancedDebugInfo[i] = x;
@@ -163,17 +160,11 @@ public class SimView extends View { //The canvas used to draw the flirds
         h.postDelayed(r, 100 / 60); //Call me again in 100/60ms
     }
     public float random(float max) { //Pick a random number
-        float min = 0;
-        Random r = new Random();
-        //r.setSeed(23);
-        float temp = r.nextFloat();
-        r.nextFloat();r.nextFloat();r.nextFloat();r.nextFloat(); //Android random is BAAAAAAD so mix it up a bit
-        return map(temp,0,1,min,max);
+        return random(0, max);
     }
     public float random(float min, float max) { //Same as above but with a minimum
-        Random r = new Random();
-        float temp = r.nextFloat() + r.nextFloat() + r.nextFloat() + r.nextFloat();
-        return map(temp,0,4,min,max);
+        float temp = random.nextFloat();
+        return map(temp,0,1,min,max);
     }
     public int inte(float f) { //Cuz we lazy
         return (int) f;
@@ -193,19 +184,9 @@ public class SimView extends View { //The canvas used to draw the flirds
     }
     public void breed(){ //Called if the population gets too low
         numGens++;
-        ArrayList<Flird> newFlock = new ArrayList<>();
-        for(int i = 0; i < 100; i++){
-            newFlock.add(new Flird(this, flock.get(inte(random(0, flock.size()-1))), flock.get(inte(random(0, flock.size()-1)))));
-        }
-        for(int i = 0; i < newFlock.size(); i++) {
-            flock.add(newFlock.get(i));
-        }
-    }
-    public void breedNew(){ //WIP new method of breeding
-        numGens++;
         ArrayList<Flird> breedPool = new ArrayList<>(); //Create a breeding pool
         ArrayList<Flird> newFlock = new ArrayList<>(); //New flock
-        for (int j = 0; j < 10; j++){ //Add each flird 10 times, gives each Flird a better chance of breeding irrelevant of location in the arraylist
+        for (int j = 0; j < 10; j++){ //Add each flird 10 times, gives each Flird an equal chance of breeding irrelevant of location in the arraylist
             for (int i = 0; i < flock.size(); i++){
                 breedPool.add(flock.get(i));
             }

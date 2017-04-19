@@ -34,6 +34,7 @@ class Flird extends Entity{
             }
         }
         getCodes();
+        isSafe();
     }
 
     Flird(SimView s, Flird a, Flird b){
@@ -55,12 +56,16 @@ class Flird extends Entity{
             }
         }
         getCodes();
-        if(v.random((float)Math.abs(aggro-v.averages[4]))<5){
+        if(v.random(Math.abs(aggro-v.averages[4]))<5){
             dna[v.code[4][0]] = (byte)v.random(-128,127);
             dna[v.code[4][1]] = (byte)v.random(-128,127);
             dna[v.code[4][2]] = (byte)v.random(-128,127);
         }
         getCodes();
+        isSafe();
+    }
+
+    private void isSafe(){
         while(true) {
             boolean safe = true;
             for (int i = 0; i < v.flock.size(); i++) {
@@ -75,7 +80,9 @@ class Flird extends Entity{
         }
     }
 
-    Flird(SimView s, Flird a, Flird b, float x, float y) {
+
+
+    private Flird(SimView s, Flird a, Flird b, float x, float y) {
         this(s, a, b);
         pos.x = x; pos.y = y;
     }
@@ -255,16 +262,17 @@ class Flird extends Entity{
         for (int i = 0; i < v.flock.size(); i++){
             Flird f = v.flock.get(i);
             if (dist(f) <= size+f.size && this != f){
-                if(choice==2 && v.flock.size()<75 && mateCoolDown==0 && v.random(1) < 0.5f) {
+                if(choice==2 && f.choice==2 && v.flock.size()<100 && mateCoolDown==0 && f.mateCoolDown==0) {
                     v.flock.add(new Flird(v, this, f, pos.x + size + v.width * 0.1f, pos.y));
                     mateCoolDown = 1200;
+                    f.mateCoolDown = 1200;
                 }
                 else f.health -= aggro / 150;
             }
         }
     }
 
-    void dropFood(){
+    private void dropFood(){
         int ranAmount = v.inte(v.random(1, 10));
         for(int i = 0; i < ranAmount; i++) {
             v.plants.add(new Plant(v, pos.x + v.random(-v.width * 0.05f, v.width * 0.05f), pos.y + v.random(-v.width * 0.05f, v.width * 0.05f), size/ranAmount+v.random(-1f, 1f)));
