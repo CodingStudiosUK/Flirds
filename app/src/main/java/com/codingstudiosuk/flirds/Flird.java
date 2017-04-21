@@ -264,10 +264,10 @@ class Flird extends Entity{
             if (dist(f) <= size+f.size && this != f){
                 if(choice==2 && f.choice==2 && v.flock.size()<100 && mateCoolDown==0 && f.mateCoolDown==0) {
                     v.flock.add(new Flird(v, this, f, pos.x + size + v.width * 0.1f, pos.y));
-                    mateCoolDown = 1200;
-                    f.mateCoolDown = 1200;
+                    mateCoolDown = 120;
+                    f.mateCoolDown = 120;
                 }
-                else f.health -= aggro / 150;
+                else f.health -= aggro / 200;
             }
         }
     }

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 
 public class FullscreenActivity extends AppCompatActivity {
 
+    private Button buttonFlirdList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     SimView simview;
@@ -40,6 +42,12 @@ public class FullscreenActivity extends AppCompatActivity {
 //            }
 //        });
         //Init drawerLayout
+        buttonFlirdList = (Button)findViewById(R.id.debug_flirdlistbutton);
+        buttonFlirdList.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                simview.setVisibility(simview.getVisibility()==View.INVISIBLE?View.VISIBLE:View.INVISIBLE);
+            }
+        });
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
         setNavDrawer();
 

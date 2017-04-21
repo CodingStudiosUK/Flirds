@@ -132,7 +132,7 @@ public class SimView extends View { //The canvas used to draw the flirds
             }
             Arrays.sort(aggroRange); //Sort the aggros, for median, LQ and UQ
             fullscreenActivity.debugInfo[0] = "FPS: "+fps; //Set averages
-            fullscreenActivity.debugInfo[1] = "Population: "+flock.size();
+            fullscreenActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
             fullscreenActivity.debugInfo[2] = "Best flird: "+flock.get(0).uuid;
             fullscreenActivity.debugInfo[3] = "No. gens: "+numGens;
             fullscreenActivity.debugInfo[4] = "speedMove: "+averages[0]+"\n Range: "+min[0]+"-"+max[0]+"\n";
