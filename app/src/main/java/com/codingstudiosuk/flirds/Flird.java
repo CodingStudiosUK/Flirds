@@ -34,7 +34,7 @@ class Flird extends Entity{
             }
         }
         getCodes();
-        isSafe();
+        //isSafe();
     }
 
     Flird(SimView s, Flird a, Flird b){

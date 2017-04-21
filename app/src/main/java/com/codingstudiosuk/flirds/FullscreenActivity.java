@@ -3,14 +3,20 @@ package com.codingstudiosuk.flirds;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,7 +28,11 @@ public class FullscreenActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     SimView simview;
+    ArrayList<String> listItems = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    int clickCounter = 0;
     private TextView debug_text, debug_dna;
+    Flird selected = null;
     String[] debugInfo = {"FPS: 0", "Population: 0","Best flird: 23",
             "No. of generations: 0", "\nAve. speedMove: 0\n (0-0)", "\nAve. moveTurn: 0\n (0-0)", "\nAve. hunger: 0\n (0-0)",
             "\nAve. size: 0\n (0-0)", "\nAve. aggro: 0 (0)\n (0-0) 0 \n (0-0) 0"}; //String array used to display basic debugging info
@@ -45,21 +55,55 @@ public class FullscreenActivity extends AppCompatActivity {
         buttonFlirdList = (Button)findViewById(R.id.debug_flirdlistbutton);
         buttonFlirdList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                simview.setVisibility(simview.getVisibility()==View.INVISIBLE?View.VISIBLE:View.INVISIBLE);
+                if(simview.getVisibility()==View.INVISIBLE){
+                    simview.setVisibility(View.VISIBLE);
+                    selected = null;
+                }else{
+                    simview.setVisibility(View.INVISIBLE);
+                    addItems(simview);
+                }
+                setNavDrawer();
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
             }
         });
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
         setNavDrawer();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        ListView lv = (ListView)findViewById(R.id.debug_flirdlist);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+                if(simview.getVisibility() == View.INVISIBLE) {
+                    String item = (String) adapter.getItemAtPosition(position > 0 ? position : 1);
+
+                    int uuid = Integer.parseInt(item.substring(0, item.indexOf(":")));
+                    for (int i = 0; i < simview.flock.size(); i++) {
+                        if (simview.flock.get(i).uuid == uuid) {
+                            selected = simview.flock.get(i);
+                            break;
+                        }
+                    }
+                    setNavDrawer();
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        });
 
     }
 
     public void setNavDrawer(){ //Init navigation drawer (used to display debugging stuff
-        String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
-        t = t.substring(1, t.length()-1).replaceAll(",", "\n"); //Each element is on a new line
-        debug_text.setText(t); //Set the text of the textview
-        t = Arrays.toString(advancedDebugInfo); //Convert debugInfo array to a string
-        t = t.substring(1, t.length()-1).replaceAll(",", "\n"); //Each element is on a new line
-        debug_dna.setText(t); //Set the text of the textview
+        if(simview.getVisibility()==View.VISIBLE) {
+            String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
+            t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
+            debug_text.setText(t); //Set the text of the textview
+            t = Arrays.toString(advancedDebugInfo); //Convert debugInfo array to a string
+            t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
+            debug_dna.setText(t); //Set the text of the textview
+        }else{
+            debug_text.setText(selected==null?"None selected":selected.uuid+"\n"+selected.aggro);
+        }
         mDrawerToggle = new ActionBarDrawerToggle( //Create a new toggle for opening/closing the drawer
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
@@ -142,5 +186,17 @@ public class FullscreenActivity extends AppCompatActivity {
         intent.putExtra("Flock", flock);
         startActivity(intent);
     }
+
+    public void addItems(View v){
+        listItems.clear();
+        listItems.add("Flock size: "+simview.flock.size());
+        for(int i = 0; i < simview.flock.size(); i++){
+            listItems.add(simview.flock.get(i).uuid+": "+simview.flock.get(i).aggro);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+
+
 
 }

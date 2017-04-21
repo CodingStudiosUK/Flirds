@@ -59,7 +59,8 @@ public class SimView extends View { //The canvas used to draw the flirds
 
     public SimView(Context context, AttributeSet attrs) { //Constructor
         super(context, attrs);
-        h = new Handler(); //Frame handler
+        h = new Handler(); //f handler
+        setBackgroundColor(0xffffffff);
     }
 
     @Override

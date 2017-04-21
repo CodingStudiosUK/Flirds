@@ -11,16 +11,15 @@
         android:background="#ffffff"
         tools:context="com.codingstudiosuk.flirds.FullscreenActivity">
 
+        <ListView
+            android:id="@+id/debug_flirdlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <com.codingstudiosuk.flirds.SimView
             android:id="@+id/anim_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>
-
-        <fragment
-            android:name="com.codingstudiosuk.flirds.DebugFragment"
-            android:id="@+id/debug_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </RelativeLayout>
 
     <LinearLayout android:id="@+id/left_drawer"
