@@ -22,7 +22,7 @@ public class SimView extends View { //The canvas used to draw the flirds
     public long frameFPS, timeFPS, frameCount; //Used for counting frames/managing framerate and timing
     public int[][] code = new int[8][3]; //Used for chromosomes, decides which chromosomes relate to which physical trait
     public boolean setup = true; //Make sure init function is only called once (damn you canvas)
-    FullscreenActivity fullscreenActivity; //A ference to the main activity
+    ActivitySimulation fullscreenActivity; //A ference to the main activity
     float averages[] = new float[5]; //speedmove, speedturn, hunger, size, aggro //Used to display the averages, debugging
     public Random random = new Random();
 

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".FullscreenActivity"
+            android:name=".ActivitySimulation"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" >
@@ -21,15 +21,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".ActivityAbout"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="About"
-            android:theme="@style/FullscreenTheme" >
-        </activity>
-        <activity
-            android:name=".DebugActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Debug"
+            android:label="@string/option_about"
             android:theme="@style/FullscreenTheme" >
         </activity>
     </application>

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
-        tools:context="com.codingstudiosuk.flirds.FullscreenActivity">
+        tools:context="com.codingstudiosuk.flirds.ActivitySimulation">
 
         <ListView
             android:id="@+id/debug_flirdlist"
@@ -52,7 +52,7 @@
 
     </LinearLayout>
 
-    <LinearLayout android:id="@+id/right_drawer"
+    <LinearLayout android:id="@+id/drawer_right"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"

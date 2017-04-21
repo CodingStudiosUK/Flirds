@@ -3,8 +3,6 @@ package com.codingstudiosuk.flirds;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FullscreenActivity extends AppCompatActivity {
+public class ActivitySimulation extends AppCompatActivity {
 
     private Button buttonFlirdList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -41,14 +39,14 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) { //Called when activity is created
         super.onCreate(savedInstanceState); //Call super
-        setContentView(R.layout.view_sim); //Set the layout to be used
+        setContentView(R.layout.activity_simulation); //Set the layout to be used
         simview = (SimView)findViewById(R.id.anim_view); //Get the View object
         simview.fullscreenActivity = this; //Pass a reference to this activity
         debug_text = (TextView)findViewById(R.id.debug_basic); //Grab some textviews
         debug_dna = (TextView)findViewById(R.id.debug_dna);
 //        debug_advanced.setOnClickListener(new View.OnClickListener() { //Some code to start an activity
 //            public void onClick(View v) {
-//                activityStart(DebugActivity.class, simview.flock);
+//                activityStart(ActivityDebug.class, simview.flock);
 //            }
 //        });
         //Init drawerLayout
@@ -162,10 +160,10 @@ public class FullscreenActivity extends AppCompatActivity {
         }
         switch(id){ //Used to open the relevant activity
             case R.id.mitem_about:
-                activityStart(AboutActivity.class); //Pass the class into the activityStart method
+                activityStart(ActivityAbout.class); //Pass the class into the activityStart method
                 break;
             case R.id.mitem_help:
-                activityStart(AboutActivity.class);
+                activityStart(ActivityAbout.class);
                 break;
             default:
                 System.out.println("Error.");
