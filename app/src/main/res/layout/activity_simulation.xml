@@ -12,17 +12,17 @@
         tools:context="com.codingstudiosuk.flirds.ActivitySimulation">
 
         <ListView
-            android:id="@+id/debug_flirdlist"
+            android:id="@+id/list_sim_flirds"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <com.codingstudiosuk.flirds.SimView
-            android:id="@+id/anim_view"
+            android:id="@+id/view_sim_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>
     </RelativeLayout>
 
-    <LinearLayout android:id="@+id/left_drawer"
+    <LinearLayout android:id="@+id/drawer_left"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -65,13 +65,13 @@
             android:text="@string/textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/debug_dna"
+            android:id="@+id/text_sim_dna"
             android:layout_weight="1"/>
         <Button
             android:text="@string/show_flirds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/debug_flirdlistbutton"/>
+            android:id="@+id/button_sim_toggledebug"/>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

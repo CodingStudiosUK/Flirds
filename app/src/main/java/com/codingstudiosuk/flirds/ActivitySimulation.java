@@ -20,6 +20,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//getSupportActionBar().setTitle(R.string.app_name);                 **
+
 public class ActivitySimulation extends AppCompatActivity {
 
     private Button buttonFlirdList;
@@ -40,21 +42,22 @@ public class ActivitySimulation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) { //Called when activity is created
         super.onCreate(savedInstanceState); //Call super
         setContentView(R.layout.activity_simulation); //Set the layout to be used
-        simview = (SimView)findViewById(R.id.anim_view); //Get the View object
+        simview = (SimView)findViewById(R.id.view_sim_view); //Get the View object
         simview.fullscreenActivity = this; //Pass a reference to this activity
         debug_text = (TextView)findViewById(R.id.debug_basic); //Grab some textviews
-        debug_dna = (TextView)findViewById(R.id.debug_dna);
+        debug_dna = (TextView)findViewById(R.id.text_sim_dna);
 //        debug_advanced.setOnClickListener(new View.OnClickListener() { //Some code to start an activity
 //            public void onClick(View v) {
 //                activityStart(ActivityDebug.class, simview.flock);
 //            }
 //        });
         //Init drawerLayout
-        buttonFlirdList = (Button)findViewById(R.id.debug_flirdlistbutton);
+        buttonFlirdList = (Button)findViewById(R.id.button_sim_toggledebug);
         buttonFlirdList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if(simview.getVisibility()==View.INVISIBLE){
                     simview.setVisibility(View.VISIBLE);
+                    simview.selected = selected;
                     selected = null;
                 }else{
                     simview.setVisibility(View.INVISIBLE);
@@ -68,7 +71,7 @@ public class ActivitySimulation extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
         setNavDrawer();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
-        ListView lv = (ListView)findViewById(R.id.debug_flirdlist);
+        ListView lv = (ListView)findViewById(R.id.list_sim_flirds);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -112,13 +115,11 @@ public class ActivitySimulation extends AppCompatActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(R.string.app_name);
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.app_name);
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle); //Some deprecated method to open the drawer **NEEDS UPDATING**

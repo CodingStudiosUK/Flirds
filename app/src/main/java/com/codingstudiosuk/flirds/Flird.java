@@ -291,4 +291,8 @@ class Flird extends Entity{
         return (float)(1/(1+Math.pow((float)Math.E, -(val*0.8f)))); //To do: map sig functions to find the most effective
     }
 
+    float fitness(){
+        return 0;//constrain(timeAlive, 0, 30)+numConflicts*2
+    }
+
 }

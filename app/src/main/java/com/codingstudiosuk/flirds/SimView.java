@@ -1,6 +1,7 @@
 package com.codingstudiosuk.flirds;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
@@ -18,13 +19,14 @@ public class SimView extends View { //The canvas used to draw the flirds
     public ArrayList<Flird> flock = new ArrayList<>(); //Create the flirds and plants arraylist
     public ArrayList<Plant> plants = new ArrayList<>();
     public int width = 1, height = 1, diag; //Some integers (diag is the diagonal length)
-    int num = 0, numGens = 0;
+    int num = 0, numGens = 0, secondsElapsed = 0, pgenLength = 0;
     public long frameFPS, timeFPS, frameCount; //Used for counting frames/managing framerate and timing
     public int[][] code = new int[8][3]; //Used for chromosomes, decides which chromosomes relate to which physical trait
     public boolean setup = true; //Make sure init function is only called once (damn you canvas)
     ActivitySimulation fullscreenActivity; //A ference to the main activity
     float averages[] = new float[5]; //speedmove, speedturn, hunger, size, aggro //Used to display the averages, debugging
     public Random random = new Random();
+    Flird selected;
 
     public void setup() { //Init function
         frameCount = 0; //Reset some stuff
@@ -76,7 +78,9 @@ public class SimView extends View { //The canvas used to draw the flirds
         }
     };
 
-    protected void onDraw(Canvas c) { //Called every 60th (ish) of a second
+    protected void onDraw(Canvas scaled) { //Called every 60th (ish) of a second
+        Bitmap unscaled = Bitmap.createBitmap(1920, 1080, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(unscaled);
         for (int i = 0; i < plants.size(); i++) { //Run the plants
             plants.get(i).run();
             plants.get(i).display(c);
@@ -135,7 +139,7 @@ public class SimView extends View { //The canvas used to draw the flirds
             fullscreenActivity.debugInfo[0] = "FPS: "+fps; //Set averages
             fullscreenActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
             fullscreenActivity.debugInfo[2] = "Best flird: "+flock.get(0).uuid;
-            fullscreenActivity.debugInfo[3] = "No. gens: "+numGens;
+            fullscreenActivity.debugInfo[3] = "No. gens: "+numGens+"/"+pgenLength;
             fullscreenActivity.debugInfo[4] = "speedMove: "+averages[0]+"\n Range: "+min[0]+"-"+max[0]+"\n";
             fullscreenActivity.debugInfo[5] = "speedTurn: "+averages[1]+"\n Range: "+min[1]+"-"+max[1]+"\n";
             fullscreenActivity.debugInfo[6] = "hunger: "+averages[2]+"\n Range: "+min[2]+"-"+max[2]+"\n";
@@ -157,6 +161,7 @@ public class SimView extends View { //The canvas used to draw the flirds
             fullscreenActivity.setNavDrawer();
             frameFPS = 0;
             timeFPS = SystemClock.elapsedRealtime();
+            secondsElapsed++;
         }
         h.postDelayed(r, 100 / 60); //Call me again in 100/60ms
     }
@@ -185,6 +190,8 @@ public class SimView extends View { //The canvas used to draw the flirds
     }
     public void breed(){ //Called if the population gets too low
         numGens++;
+        pgenLength = numGens%5==0?pgenLength:secondsElapsed/(numGens%5);
+        secondsElapsed = numGens%5==0?0:secondsElapsed;
         ArrayList<Flird> breedPool = new ArrayList<>(); //Create a breeding pool
         ArrayList<Flird> newFlock = new ArrayList<>(); //New flock
         for (int j = 0; j < 10; j++){ //Add each flird 10 times, gives each Flird an equal chance of breeding irrelevant of location in the arraylist
