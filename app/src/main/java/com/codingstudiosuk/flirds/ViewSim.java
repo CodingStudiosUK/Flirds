@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class SimView extends View { //The canvas used to draw the flirds
+public class ViewSim extends View { //The canvas used to draw the flirds
 
     private Handler h; //Used for frames
     public Paint black = new Paint(0); //Black (to draw black stuff)
@@ -23,7 +23,7 @@ public class SimView extends View { //The canvas used to draw the flirds
     public long frameFPS, timeFPS, frameCount; //Used for counting frames/managing framerate and timing
     public int[][] code = new int[8][3]; //Used for chromosomes, decides which chromosomes relate to which physical trait
     public boolean setup = true; //Make sure init function is only called once (damn you canvas)
-    ActivitySimulation fullscreenActivity; //A ference to the main activity
+    ActivitySimulation mainActivity; //A ference to the main activity
     float averages[] = new float[5]; //speedmove, speedturn, hunger, size, aggro //Used to display the averages, debugging
     public Random random = new Random();
     Flird selected;
@@ -59,7 +59,7 @@ public class SimView extends View { //The canvas used to draw the flirds
         }
     }
 
-    public SimView(Context context, AttributeSet attrs) { //Constructor
+    public ViewSim(Context context, AttributeSet attrs) { //Constructor
         super(context, attrs);
         h = new Handler(); //f handler
         setBackgroundColor(0xffffffff);
@@ -136,29 +136,29 @@ public class SimView extends View { //The canvas used to draw the flirds
                 averages[i]/=flock.size();
             }
             Arrays.sort(aggroRange); //Sort the aggros, for median, LQ and UQ
-            fullscreenActivity.debugInfo[0] = "FPS: "+fps; //Set averages
-            fullscreenActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
-            fullscreenActivity.debugInfo[2] = "Best flird: "+flock.get(0).uuid;
-            fullscreenActivity.debugInfo[3] = "No. gens: "+numGens+"/"+pgenLength;
-            fullscreenActivity.debugInfo[4] = "speedMove: "+averages[0]+"\n Range: "+min[0]+"-"+max[0]+"\n";
-            fullscreenActivity.debugInfo[5] = "speedTurn: "+averages[1]+"\n Range: "+min[1]+"-"+max[1]+"\n";
-            fullscreenActivity.debugInfo[6] = "hunger: "+averages[2]+"\n Range: "+min[2]+"-"+max[2]+"\n";
-            fullscreenActivity.debugInfo[7] = "size: "+averages[3]+"\n Range: "+min[3]+"-"+max[3]+"\n";
-            fullscreenActivity.debugInfo[8] = "aggro: "+averages[4];
-            fullscreenActivity.debugInfo[8] +="\n Median: "+aggroRange[Math.round(aggroRange.length*0.5f)];
-            fullscreenActivity.debugInfo[8] +="\n Range: "+min[4]+"-"+max[4];
-            fullscreenActivity.debugInfo[8] +="\n Range: "+(max[4]-min[4]);
-            fullscreenActivity.debugInfo[8] +="\n LQ-UQ: "+aggroRange[Math.round(aggroRange.length*0.25f)]+"-"+aggroRange[Math.round(aggroRange.length*0.75f)];
-            fullscreenActivity.debugInfo[8] +="\n Diff: "+(aggroRange[Math.round(aggroRange.length*0.75f)]-aggroRange[Math.round(aggroRange.length*0.25f)]);
+            mainActivity.debugInfo[0] = "FPS: "+fps; //Set averages
+            mainActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
+            mainActivity.debugInfo[2] = "Best flird: "+flock.get(0).uuid;
+            mainActivity.debugInfo[3] = "No. gens: "+numGens+"/"+pgenLength;
+            mainActivity.debugInfo[4] = "speedMove: "+averages[0]+"\n Range: "+min[0]+"-"+max[0]+"\n";
+            mainActivity.debugInfo[5] = "speedTurn: "+averages[1]+"\n Range: "+min[1]+"-"+max[1]+"\n";
+            mainActivity.debugInfo[6] = "hunger: "+averages[2]+"\n Range: "+min[2]+"-"+max[2]+"\n";
+            mainActivity.debugInfo[7] = "size: "+averages[3]+"\n Range: "+min[3]+"-"+max[3]+"\n";
+            mainActivity.debugInfo[8] = "aggro: "+averages[4];
+            mainActivity.debugInfo[8] +="\n Median: "+aggroRange[Math.round(aggroRange.length*0.5f)];
+            mainActivity.debugInfo[8] +="\n Range: "+min[4]+"-"+max[4];
+            mainActivity.debugInfo[8] +="\n Range: "+(max[4]-min[4]);
+            mainActivity.debugInfo[8] +="\n LQ-UQ: "+aggroRange[Math.round(aggroRange.length*0.25f)]+"-"+aggroRange[Math.round(aggroRange.length*0.75f)];
+            mainActivity.debugInfo[8] +="\n Diff: "+(aggroRange[Math.round(aggroRange.length*0.75f)]-aggroRange[Math.round(aggroRange.length*0.25f)]);
             //Set stuff for right nav drawer
-            for(int i = 1; i < fullscreenActivity.advancedDebugInfo.length; i++) {
+            for(int i = 1; i < mainActivity.advancedDebugInfo.length; i++) {
                 String t = Arrays.toString(code[i]);
                 t = t.substring(1, t.length()-1).replaceAll(" ", "").replaceAll(",", ".");
-                String x = fullscreenActivity.advancedDebugInfo[i];
+                String x = mainActivity.advancedDebugInfo[i];
                 x = x.subSequence(0, x.length()-5) + t;
-                fullscreenActivity.advancedDebugInfo[i] = x;
+                mainActivity.advancedDebugInfo[i] = x;
             }
-            fullscreenActivity.setNavDrawer();
+            mainActivity.setNavDrawer();
             frameFPS = 0;
             timeFPS = SystemClock.elapsedRealtime();
             secondsElapsed++;

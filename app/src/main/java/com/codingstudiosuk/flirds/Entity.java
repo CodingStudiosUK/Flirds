@@ -5,13 +5,13 @@ import android.graphics.Paint;
 class Entity {
 
     Vector pos;
-    transient SimView v;
+    transient ViewSim v;
     float aggro;
     boolean dead = false;
     float size;
     Paint fill = new Paint(0);
 
-    Entity(SimView s) {
+    Entity(ViewSim s) {
         v = s;
         pos = new Vector(v.random(0, v.width), v.random(0, v.height));
     }

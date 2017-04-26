@@ -27,7 +27,8 @@ public class ActivitySimulation extends AppCompatActivity {
     private Button buttonFlirdList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    SimView simview;
+    ViewSim simview;
+    ViewFlird flirdview;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     int clickCounter = 0;
@@ -42,25 +43,27 @@ public class ActivitySimulation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) { //Called when activity is created
         super.onCreate(savedInstanceState); //Call super
         setContentView(R.layout.activity_simulation); //Set the layout to be used
-        simview = (SimView)findViewById(R.id.view_sim_view); //Get the View object
-        simview.fullscreenActivity = this; //Pass a reference to this activity
+
+        simview = (ViewSim)findViewById(R.id.view_sim_view); //Get the View object
+        simview.mainActivity = this; //Pass a reference to this activity
+        flirdview = (ViewFlird)findViewById(R.id.view_flird_view);
+        flirdview.mainActivity = this;
+        flirdview.setVisibility(View.INVISIBLE);
+
         debug_text = (TextView)findViewById(R.id.debug_basic); //Grab some textviews
         debug_dna = (TextView)findViewById(R.id.text_sim_dna);
-//        debug_advanced.setOnClickListener(new View.OnClickListener() { //Some code to start an activity
-//            public void onClick(View v) {
-//                activityStart(ActivityDebug.class, simview.flock);
-//            }
-//        });
+
         //Init drawerLayout
         buttonFlirdList = (Button)findViewById(R.id.button_sim_toggledebug);
         buttonFlirdList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if(simview.getVisibility()==View.INVISIBLE){
                     simview.setVisibility(View.VISIBLE);
+                    flirdview.setVisibility(View.INVISIBLE);
                     simview.selected = selected;
-                    selected = null;
                 }else{
                     simview.setVisibility(View.INVISIBLE);
+                    flirdview.setVisibility(View.INVISIBLE);
                     addItems(simview);
                 }
                 setNavDrawer();
@@ -86,8 +89,9 @@ public class ActivitySimulation extends AppCompatActivity {
                             break;
                         }
                     }
+                    flirdview.setVisibility(View.VISIBLE);
                     setNavDrawer();
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                    //mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
             }
         });

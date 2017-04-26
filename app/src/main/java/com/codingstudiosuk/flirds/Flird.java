@@ -20,7 +20,7 @@ class Flird extends Entity{
     private int mateCoolDown = 0;
     transient private Entity closePrey, closeMate, closePred, closeAll;
 
-    Flird(SimView s){
+    Flird(ViewSim s){
         super(s);
         fill.setARGB(255, 75, 0, 75);
         for (int i = 0; i < 8; i++){
@@ -37,7 +37,7 @@ class Flird extends Entity{
         //isSafe();
     }
 
-    Flird(SimView s, Flird a, Flird b){
+    Flird(ViewSim s, Flird a, Flird b){
         super(s);
         fill.setARGB(255, 150, 75, 0);
         for(int i = 0; i < 8; i++){
@@ -82,7 +82,7 @@ class Flird extends Entity{
 
 
 
-    private Flird(SimView s, Flird a, Flird b, float x, float y) {
+    private Flird(ViewSim s, Flird a, Flird b, float x, float y) {
         this(s, a, b);
         pos.x = x; pos.y = y;
     }

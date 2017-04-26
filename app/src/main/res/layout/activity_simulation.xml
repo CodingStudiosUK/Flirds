@@ -16,7 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.codingstudiosuk.flirds.SimView
+        <com.codingstudiosuk.flirds.ViewFlird
+            android:id="@+id/view_flird_view"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+        <com.codingstudiosuk.flirds.ViewSim
             android:id="@+id/view_sim_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>

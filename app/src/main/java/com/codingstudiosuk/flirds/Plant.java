@@ -4,14 +4,14 @@ import android.graphics.Canvas;
 
 class Plant extends Entity {
 
-    Plant(SimView s){
+    Plant(ViewSim s){
         super(s);
         aggro = -10;
         size = v.inte(v.random(5, 25));
         fill.setARGB(255, 75, 150, 0);
         isSafe();
     }
-    Plant(SimView s, float x, float y, float si){
+    Plant(ViewSim s, float x, float y, float si){
         super(s);
         aggro = -10;
         size = si;
