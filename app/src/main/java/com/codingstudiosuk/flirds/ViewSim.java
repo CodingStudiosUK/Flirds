@@ -16,16 +16,21 @@ public class ViewSim extends View { //The canvas used to draw the flirds
 
     private Handler h; //Used for frames
     public Paint black = new Paint(0); //Black (to draw black stuff)
+    private boolean setup = true; //Make sure init function is only called once (damn you canvas)
+    ActivitySimulation mainActivity; //A reference to the main activity
+    public Random random = new Random();
+
     public ArrayList<Flird> flock = new ArrayList<>(); //Create the flirds and plants arraylist
     public ArrayList<Plant> plants = new ArrayList<>();
+
     public int width = 1, height = 1, diag; //Some integers (diag is the diagonal length)
-    int num = 0, numGens = 0, secondsElapsed = 0, pgenLength = 0;
+
+    int num = 0, numGens = 0, secondsElapsed = 0, pgenLength = 0; //Some counters for timing and counting
     public long frameFPS, timeFPS, frameCount; //Used for counting frames/managing framerate and timing
+
     public int[][] code = new int[8][3]; //Used for chromosomes, decides which chromosomes relate to which physical trait
-    public boolean setup = true; //Make sure init function is only called once (damn you canvas)
-    ActivitySimulation mainActivity; //A ference to the main activity
+
     float averages[] = new float[5]; //speedmove, speedturn, hunger, size, aggro //Used to display the averages, debugging
-    public Random random = new Random();
     Flird selected;
 
     public void setup() { //Init function
@@ -78,9 +83,9 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         }
     };
 
-    protected void onDraw(Canvas scaled) { //Called every 60th (ish) of a second
-        Bitmap unscaled = Bitmap.createBitmap(1920, 1080, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(unscaled);
+    protected void onDraw(Canvas c) { //Called every 60th (ish) of a second
+        //Bitmap unscaled = Bitmap.createBitmap(1920, 1080, Bitmap.Config.ARGB_8888);
+        //Canvas c = new Canvas(unscaled);
         for (int i = 0; i < plants.size(); i++) { //Run the plants
             plants.get(i).run();
             plants.get(i).display(c);

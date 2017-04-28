@@ -53,7 +53,7 @@ public class ActivitySimulation extends AppCompatActivity {
         debug_text = (TextView)findViewById(R.id.debug_basic); //Grab some textviews
         debug_dna = (TextView)findViewById(R.id.text_sim_dna);
 
-        //Init drawerLayout
+        //Init button
         buttonFlirdList = (Button)findViewById(R.id.button_sim_toggledebug);
         buttonFlirdList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -73,7 +73,7 @@ public class ActivitySimulation extends AppCompatActivity {
         });
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
         setNavDrawer();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItems);
         ListView lv = (ListView)findViewById(R.id.list_sim_flirds);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,6 +90,7 @@ public class ActivitySimulation extends AppCompatActivity {
                         }
                     }
                     flirdview.setVisibility(View.VISIBLE);
+                    flirdview.setFlird(selected);
                     setNavDrawer();
                     //mDrawerLayout.openDrawer(Gravity.LEFT);
                 }

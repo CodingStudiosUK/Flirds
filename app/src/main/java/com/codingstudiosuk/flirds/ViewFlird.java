@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class ViewFlird extends View{
 
     Handler h;
@@ -15,6 +17,10 @@ public class ViewFlird extends View{
     Activity mainActivity;
 
     Paint fill = new Paint();
+
+    Flird selectedFlird;
+
+    int width, height;
 
     public ViewFlird(Context context, AttributeSet attrs) { //Constructor
         super(context, attrs);
@@ -30,7 +36,8 @@ public class ViewFlird extends View{
     }
 
     public void setup(){
-
+        width = getWidth();
+        height = getHeight();
     }
 
     private Runnable r = new Runnable() { //Creates a draw loop
@@ -41,7 +48,14 @@ public class ViewFlird extends View{
     };
 
     protected void onDraw(Canvas c){
-        c.drawCircle(500, 500, 50, fill);
+        c.drawCircle(width*0.2f, height*0.2f, 50, fill);
+        c.drawCircle(width*0.4f, height*0.2f, 50, fill);
+        c.drawCircle(width*0.6f, height*0.2f, 50, fill);
+        c.drawCircle(width*0.8f, height*0.2f, 50, fill);
         h.postDelayed(r, 100 / 60); //Call me again in 100/60ms
+    }
+
+    public void setFlird(Flird f){
+        selectedFlird = f;
     }
 }

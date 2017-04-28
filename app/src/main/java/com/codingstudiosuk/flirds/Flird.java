@@ -5,14 +5,16 @@ import android.graphics.Canvas;
 class Flird extends Entity{
 
     int uuid;
-    private float dir = v.random(0, 360);
     private boolean a = false, d = false;
+
+    private float dir = v.random(0, 360);
     private float health = 1f;
     float speedMove;
     float speedTurn;
     float hunger;
     private int intel;
     private byte[] dna = new byte[8];
+
     private float[][][] network = new float[3][5][5];
     private float[] thresh = new float[2];
     private int type;
