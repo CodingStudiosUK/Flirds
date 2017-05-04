@@ -48,11 +48,17 @@ public class ViewFlird extends View{
     };
 
     protected void onDraw(Canvas c){
-        c.drawCircle(width*0.2f, height*0.2f, 50, fill);
-        c.drawCircle(width*0.4f, height*0.2f, 50, fill);
-        c.drawCircle(width*0.6f, height*0.2f, 50, fill);
-        c.drawCircle(width*0.8f, height*0.2f, 50, fill);
-        h.postDelayed(r, 100 / 60); //Call me again in 100/60ms
+        c.drawCircle(width/5,   height*0.2f, 50, fill); //Input nodes
+        c.drawCircle(width/5*2, height*0.2f, 50, fill);
+        c.drawCircle(width/5*3, height*0.2f, 50, fill);
+        c.drawCircle(width/5*4, height*0.2f, 50, fill);
+
+        c.drawCircle(width/6,   height*0.4f, 50, fill); //Hidden nodes
+        c.drawCircle(width/6*2, height*0.4f, 50, fill);
+        c.drawCircle(width/6*3, height*0.4f, 50, fill);
+        c.drawCircle(width/6*4, height*0.4f, 50, fill);
+        c.drawCircle(width/6*5, height*0.4f, 50, fill);
+        h.postDelayed(r, 1000); //Call me again in 1 second
     }
 
     public void setFlird(Flird f){

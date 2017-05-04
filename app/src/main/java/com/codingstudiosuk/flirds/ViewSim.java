@@ -218,4 +218,19 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.add(newFlock.get(i)); //Add the new flock to the existing flock
         }
     }
+    public void sort(ArrayList<Flird> unsorted){ //TOOD
+        int best = -1, worst = -1;
+        float bestFit = 0, worstFit = 0;
+        for(int i = 0; i < unsorted.size(); i++){
+            for(int j = i+1; j < unsorted.size(); j++){
+                Flird f1 = unsorted.get(i);
+                Flird f2 = unsorted.get(j);
+
+                if(f1.fitness() < f2.fitness()){
+                    unsorted.remove(i);
+                    unsorted.add(f1);
+                }
+            }
+        }
+    }
 }

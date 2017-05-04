@@ -21,6 +21,7 @@ class Flird extends Entity{
     private int choice;
     private int mateCoolDown = 0;
     transient private Entity closePrey, closeMate, closePred, closeAll;
+    private int numConflicts = 0, timeAlive = 0;
 
     Flird(ViewSim s){
         super(s);
@@ -269,7 +270,7 @@ class Flird extends Entity{
                     mateCoolDown = 120;
                     f.mateCoolDown = 120;
                 }
-                else f.health -= aggro / 200;
+                else f.health -= aggro / 200; numConflicts++;
             }
         }
     }
@@ -294,7 +295,7 @@ class Flird extends Entity{
     }
 
     float fitness(){
-        return 0;//constrain(timeAlive, 0, 30)+numConflicts*2
+        return v.constrain(timeAlive, 0, 180)/60+numConflicts*2;
     }
 
 }
