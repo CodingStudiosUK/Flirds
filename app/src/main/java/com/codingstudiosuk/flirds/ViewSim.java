@@ -94,6 +94,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.get(i).run();
             flock.get(i).display(c);
         }
+
         for (int i = flock.size()-1; i > -1; i--) { //Remove dead flirds
             if (flock.get(i).dead) {
                 flock.remove(i);
@@ -140,6 +141,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             for(int i = 0; i < averages.length; i++){
                 averages[i]/=flock.size();
             }
+            sort();
             Arrays.sort(aggroRange); //Sort the aggros, for median, LQ and UQ
             mainActivity.debugInfo[0] = "FPS: "+fps; //Set averages
             mainActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
@@ -218,19 +220,20 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.add(newFlock.get(i)); //Add the new flock to the existing flock
         }
     }
-    public void sort(ArrayList<Flird> unsorted){ //TOOD
-        int best = -1, worst = -1;
-        float bestFit = 0, worstFit = 0;
+    public void sort(){ //
+        ArrayList<Flird> unsorted = flock;
+        ArrayList<Flird> sorted = new ArrayList<>();
+        Flird best = unsorted.get(0);
         for(int i = 0; i < unsorted.size(); i++){
             for(int j = i+1; j < unsorted.size(); j++){
-                Flird f1 = unsorted.get(i);
-                Flird f2 = unsorted.get(j);
+                Flird f = unsorted.get(j);
 
-                if(f1.fitness() < f2.fitness()){
-                    unsorted.remove(i);
-                    unsorted.add(f1);
+                if(f.fitness() > best.fitness()){
+                    best = f;
                 }
             }
+            sorted.add(best);
         }
+        flock = sorted;
     }
 }
