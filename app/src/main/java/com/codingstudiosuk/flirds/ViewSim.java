@@ -16,6 +16,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
 
     private Handler h; //Used for frames
     public Paint black = new Paint(0); //Black (to draw black stuff)
+    private Paint[] rings = {new Paint(0), new Paint(0), new Paint(0)};
     private boolean setup = true; //Make sure init function is only called once (damn you canvas)
     ActivitySimulation mainActivity; //A reference to the main activity
     public Random random = new Random();
@@ -61,6 +62,11 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             setup = false;
             black.setARGB(255, 0, 0, 0);
             black.setTextSize(50);
+
+            for(int i = 0; i < rings.length; i++){rings[0].setStyle(Paint.Style.STROKE);}
+            rings[0].setARGB(255, 250, 175, 50);
+            rings[1].setARGB(255, 160, 180, 180);
+            rings[2].setARGB(255, 200, 175, 50);
         }
     }
 
@@ -94,6 +100,10 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.get(i).run();
             flock.get(i).display(c);
         }
+        //Draw rings on best Flirds
+//        for(int i = 0; i < rings.length; i++) {
+//            c.drawCircle(flock.get(i).pos.x, flock.get(i).pos.y, width * 0.05f, rings[i]);
+//        }
 
         for (int i = flock.size()-1; i > -1; i--) { //Remove dead flirds
             if (flock.get(i).dead) {
@@ -141,7 +151,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             for(int i = 0; i < averages.length; i++){
                 averages[i]/=flock.size();
             }
-            sort();
+            //sort();
             Arrays.sort(aggroRange); //Sort the aggros, for median, LQ and UQ
             mainActivity.debugInfo[0] = "FPS: "+fps; //Set averages
             mainActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
@@ -170,7 +180,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             timeFPS = SystemClock.elapsedRealtime();
             secondsElapsed++;
         }
-        h.postDelayed(r, 100 / 60); //Call me again in 100/60ms
+        h.postDelayed(r, 100); //Call me again in 100/60ms
     }
     public float random(float max) { //Pick a random number
         return random(0, max);
@@ -220,7 +230,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.add(newFlock.get(i)); //Add the new flock to the existing flock
         }
     }
-    public void sort(){ //
+    public void sort(){ //NEEDS TO BE FIXED
         ArrayList<Flird> unsorted = flock;
         ArrayList<Flird> sorted = new ArrayList<>();
         Flird best = unsorted.get(0);
