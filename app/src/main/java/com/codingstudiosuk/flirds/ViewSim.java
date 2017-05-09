@@ -10,18 +10,22 @@ import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 public class ViewSim extends View { //The canvas used to draw the flirds
 
     private Handler h; //Used for frames
     public Paint black = new Paint(0); //Black (to draw black stuff)
-    private Paint[] rings = {new Paint(0), new Paint(0), new Paint(0)};
+    private Paint[] rings = {new Paint(0), new Paint(0), new Paint(0), new Paint(0)};
     private boolean setup = true; //Make sure init function is only called once (damn you canvas)
     ActivitySimulation mainActivity; //A reference to the main activity
     public Random random = new Random();
 
-    public ArrayList<Flird> flock = new ArrayList<>(); //Create the flirds and plants arraylist
+    public ArrayList<Flird> flock = new ArrayList<Flird>(); //Create the flirds and plants arraylist
     public ArrayList<Plant> plants = new ArrayList<>();
 
     public int width = 1, height = 1, diag; //Some integers (diag is the diagonal length)
@@ -63,10 +67,14 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             black.setARGB(255, 0, 0, 0);
             black.setTextSize(50);
 
-            for(int i = 0; i < rings.length; i++){rings[0].setStyle(Paint.Style.STROKE);}
+            for(int i = 0; i < rings.length; i++){
+                rings[i].setStyle(Paint.Style.STROKE);
+                rings[i].setStrokeWidth(width*0.008f);
+            }
             rings[0].setARGB(255, 250, 175, 50);
             rings[1].setARGB(255, 160, 180, 180);
             rings[2].setARGB(255, 200, 175, 50);
+            rings[3].setARGB(255, 10, 70, 160);
         }
     }
 
@@ -100,13 +108,20 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.get(i).run();
             flock.get(i).display(c);
         }
-        //Draw rings on best Flirds
-//        for(int i = 0; i < rings.length; i++) {
-//            c.drawCircle(flock.get(i).pos.x, flock.get(i).pos.y, width * 0.05f, rings[i]);
-//        }
+//        Draw rings on best Flirds
+        for(int i = 0; i < 3; i++) {
+            c.drawCircle(flock.get(i).pos.x, flock.get(i).pos.y, width * 0.05f, rings[i]);
+        }
+        //Selected Flird
+        if(selected != null) {
+            c.drawCircle(selected.pos.x, selected.pos.y, width*0.05f, rings[3]);
+        }
 
         for (int i = flock.size()-1; i > -1; i--) { //Remove dead flirds
             if (flock.get(i).dead) {
+                if(flock.get(i)==selected){
+                    selected = null;
+                }
                 flock.remove(i);
                 if(flock.size() == 20){
                     breed();
@@ -124,6 +139,9 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         }
         frameFPS++; //Increment counters
         frameCount++;
+        if(this.getVisibility() == View.INVISIBLE){
+            sort();
+        }
         if (timeFPS + 1000 < SystemClock.elapsedRealtime()) { //Once a second update the debug stuff
             float min[] = {101,101,101,101,101};
             float max[] = {-1,-1,-1,-1,-1};
@@ -151,7 +169,8 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             for(int i = 0; i < averages.length; i++){
                 averages[i]/=flock.size();
             }
-            //sort();
+            sort();
+            mainActivity.addItems(this);
             Arrays.sort(aggroRange); //Sort the aggros, for median, LQ and UQ
             mainActivity.debugInfo[0] = "FPS: "+fps; //Set averages
             mainActivity.debugInfo[1] = "Population: "+flock.size()+"/"+num;
@@ -180,7 +199,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             timeFPS = SystemClock.elapsedRealtime();
             secondsElapsed++;
         }
-        h.postDelayed(r, 100); //Call me again in 100/60ms
+        h.postDelayed(r, 100/60); //Call me again in 100/60ms
     }
     public float random(float max) { //Pick a random number
         return random(0, max);
@@ -230,8 +249,8 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             flock.add(newFlock.get(i)); //Add the new flock to the existing flock
         }
     }
-    public void sort(){ //NEEDS TO BE FIXED
-        ArrayList<Flird> unsorted = flock;
+    public void sortOLD(){ //NEEDS TO BE FIXED
+        List<Flird> unsorted = flock;
         ArrayList<Flird> sorted = new ArrayList<>();
         Flird best = unsorted.get(0);
         for(int i = 0; i < unsorted.size(); i++){
@@ -245,5 +264,9 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             sorted.add(best);
         }
         flock = sorted;
+    }
+
+    public void sort(){
+        Collections.sort(flock);
     }
 }

@@ -34,7 +34,7 @@ public class ActivitySimulation extends AppCompatActivity {
     int clickCounter = 0;
     private TextView debug_text, debug_dna;
     Flird selected = null;
-    String[] debugInfo = {"FPS: 0", "Population: 0","Best flird: 23",
+    String[] debugInfo = {"FPS: 0", "Population: 0", "Best flird: 23",
             "No. of generations: 0", "\nAve. speedMove: 0\n (0-0)", "\nAve. moveTurn: 0\n (0-0)", "\nAve. hunger: 0\n (0-0)",
             "\nAve. size: 0\n (0-0)", "\nAve. aggro: 0 (0)\n (0-0) 0 \n (0-0) 0"}; //String array used to display basic debugging info
     String[] advancedDebugInfo = {"CHROMOSOMES\n", "SpeedMove: 0,0,0", "SpeedTurn: 0,0,0", "Hunger: 0,0,0", "Size: 0,0,0", "Aggro: 0,0,0"}; //String array used to display basic debugging info
@@ -44,24 +44,23 @@ public class ActivitySimulation extends AppCompatActivity {
         super.onCreate(savedInstanceState); //Call super
         setContentView(R.layout.activity_simulation); //Set the layout to be used
 
-        simview = (ViewSim)findViewById(R.id.view_sim_view); //Get the View object
+        simview = (ViewSim) findViewById(R.id.view_sim_view); //Get the View object
         simview.mainActivity = this; //Pass a reference to this activity
-        flirdview = (ViewFlird)findViewById(R.id.view_flird_view);
+        flirdview = (ViewFlird) findViewById(R.id.view_flird_view);
         flirdview.mainActivity = this;
         flirdview.setVisibility(View.INVISIBLE);
 
-        debug_text = (TextView)findViewById(R.id.debug_basic); //Grab some textviews
-        debug_dna = (TextView)findViewById(R.id.text_sim_dna);
+        debug_text = (TextView) findViewById(R.id.debug_basic); //Grab some textviews
+        debug_dna = (TextView) findViewById(R.id.text_sim_dna);
 
         //Init button
-        buttonFlirdList = (Button)findViewById(R.id.button_sim_toggledebug);
-        buttonFlirdList.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if(simview.getVisibility()==View.INVISIBLE){
+        buttonFlirdList = (Button) findViewById(R.id.button_sim_toggledebug);
+        buttonFlirdList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { //Show flird button
+                if (simview.getVisibility() == View.INVISIBLE) {
                     simview.setVisibility(View.VISIBLE);
                     flirdview.setVisibility(View.INVISIBLE);
-                    simview.selected = selected;
-                }else{
+                } else {
                     simview.setVisibility(View.INVISIBLE);
                     flirdview.setVisibility(View.INVISIBLE);
                     addItems(simview);
@@ -71,44 +70,43 @@ public class ActivitySimulation extends AppCompatActivity {
 
             }
         });
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
         setNavDrawer();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItems);
-        ListView lv = (ListView)findViewById(R.id.list_sim_flirds);
+        ListView lv = (ListView) findViewById(R.id.list_sim_flirds);
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() { //When you click on the flirdlist
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-                if(simview.getVisibility() == View.INVISIBLE) {
-                    String item = (String) adapter.getItemAtPosition(position > 0 ? position : 1);
+                String item = (String) adapter.getItemAtPosition(position > 0 ? position : 1);
 
-                    int uuid = Integer.parseInt(item.substring(0, item.indexOf(":")));
-                    for (int i = 0; i < simview.flock.size(); i++) {
-                        if (simview.flock.get(i).uuid == uuid) {
-                            selected = simview.flock.get(i);
-                            break;
-                        }
+                int uuid = Integer.parseInt(item.substring(0, item.indexOf(":")));
+                for (int i = 0; i < simview.flock.size(); i++) {
+                    if (simview.flock.get(i).uuid == uuid) {
+                        selected = simview.flock.get(i);
+                        break;
                     }
-                    flirdview.setVisibility(View.VISIBLE);
-                    flirdview.setFlird(selected);
-                    setNavDrawer();
-                    //mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
+                simview.selected = selected;
+                flirdview.setVisibility(View.VISIBLE);
+                flirdview.setFlird(selected);
+                setNavDrawer();
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
 
     }
 
-    public void setNavDrawer(){ //Init navigation drawer (used to display debugging stuff
-        if(simview.getVisibility()==View.VISIBLE) {
+    public void setNavDrawer() { //Init navigation drawer (used to display debugging stuff
+        if (simview.getVisibility() == View.VISIBLE) {
             String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
             t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
             debug_text.setText(t); //Set the text of the textview
             t = Arrays.toString(advancedDebugInfo); //Convert debugInfo array to a string
             t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
             debug_dna.setText(t); //Set the text of the textview
-        }else{
-            debug_text.setText(selected==null?"None selected":selected.uuid+"\n"+selected.aggro);
+        } else {
+            debug_text.setText(selected == null ? "None selected" : selected.uuid + "\n" + selected.aggro);
         }
         mDrawerToggle = new ActionBarDrawerToggle( //Create a new toggle for opening/closing the drawer
                 this,                  /* host Activity */
@@ -134,7 +132,7 @@ public class ActivitySimulation extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
     } //Method called when switching to this activity from something more fun
 
@@ -152,19 +150,19 @@ public class ActivitySimulation extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){ //When you tap the three dots on the top right
+    public boolean onCreateOptionsMenu(Menu menu) { //When you tap the three dots on the top right
         MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){ //Called when you tap a menu item
+    public boolean onOptionsItemSelected(MenuItem item) { //Called when you tap a menu item
         int id = item.getItemId();
         if (mDrawerToggle.onOptionsItemSelected(item)) { //Opens the nav drawer when you tap the three lines top left
             return true;
         }
-        switch(id){ //Used to open the relevant activity
+        switch (id) { //Used to open the relevant activity
             case R.id.mitem_about:
                 activityStart(ActivityAbout.class); //Pass the class into the activityStart method
                 break;
@@ -191,16 +189,14 @@ public class ActivitySimulation extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addItems(View v){
+    public void addItems(View v) {
         listItems.clear();
-        listItems.add("Flock size: "+simview.flock.size());
-        for(int i = 0; i < simview.flock.size(); i++){
-            listItems.add(simview.flock.get(i).uuid+": "+simview.flock.get(i).aggro);
+        listItems.add("Flock size: " + simview.flock.size());
+        for (int i = 0; i < simview.flock.size(); i++) {
+            listItems.add(simview.flock.get(i).uuid + ": " + simview.flock.get(i).aggro);
         }
         adapter.notifyDataSetChanged();
     }
-
-
 
 
 }

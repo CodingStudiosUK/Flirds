@@ -4,4 +4,10 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context="com.codingstudiosuk.flirds.ActivityAbout">
+
+    <TextView
+        android:id="@+id/text_about_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_intro" />
 </RelativeLayout>

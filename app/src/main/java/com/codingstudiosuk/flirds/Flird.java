@@ -2,7 +2,9 @@ package com.codingstudiosuk.flirds;
 
 import android.graphics.Canvas;
 
-class Flird extends Entity{
+import java.util.Comparator;
+
+class Flird extends Entity implements Comparable<Flird>{
 
     int uuid;
     private boolean a = false, d = false;
@@ -22,6 +24,12 @@ class Flird extends Entity{
     private int mateCoolDown = 0;
     transient private Entity closePrey, closeMate, closePred, closeAll;
     private int numConflicts = 0, timeAlive = 0;
+
+    @Override
+    public int compareTo(Flird f){
+
+        return (int)f.aggro-(int)aggro;
+    }
 
     Flird(ViewSim s){
         super(s);
@@ -297,5 +305,4 @@ class Flird extends Entity{
     float fitness(){
         return v.constrain(timeAlive, 0, 180)/60+numConflicts*2;
     }
-
 }
