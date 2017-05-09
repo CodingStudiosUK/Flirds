@@ -5,4 +5,6 @@
         android:id="@+id/mitem_about" />
     <item android:title="@string/option_help"
         android:id="@+id/mitem_help" />
+    <item android:title="@string/option_infop"
+        android:id="@+id/mitem_infop" />
 </menu>

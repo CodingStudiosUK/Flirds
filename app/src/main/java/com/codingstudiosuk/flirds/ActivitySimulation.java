@@ -160,6 +160,7 @@ public class ActivitySimulation extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) { //Called when you tap a menu item
         int id = item.getItemId();
         if (mDrawerToggle.onOptionsItemSelected(item)) { //Opens the nav drawer when you tap the three lines top left
+            mDrawerLayout.closeDrawer(Gravity.RIGHT);
             return true;
         }
         switch (id) { //Used to open the relevant activity
@@ -169,6 +170,13 @@ public class ActivitySimulation extends AppCompatActivity {
             case R.id.mitem_help:
                 activityStart(ActivityAbout.class);
                 break;
+            case R.id.mitem_infop:
+                if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }else{
+                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
             default:
                 System.out.println("Error.");
                 break;

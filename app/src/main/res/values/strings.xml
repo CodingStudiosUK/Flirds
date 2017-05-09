@@ -13,4 +13,5 @@
     <string name="option_help">Help</string>
     <string name="show_flird">Show Flird Info</string>
     <string name="about_intro">Welcome to FLIRDS, a (WIP) simulation of evolution using a model of dna inheritance and neural net based stuff.</string>
+    <string name="option_infop">More info</string>
 </resources>
