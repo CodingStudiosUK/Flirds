@@ -68,6 +68,7 @@ public class ActivitySimulation extends AppCompatActivity {
             }
         });
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
+        mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
         setNavDrawer();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItems);
         ListView lv = (ListView) findViewById(R.id.list_sim_flirds);
@@ -196,7 +197,6 @@ public class ActivitySimulation extends AppCompatActivity {
 
     public void addItems(View v) {
         listItems.clear();
-        listItems.add("Flock size: " + simview.flock.size());
         for (int i = 0; i < simview.flock.size(); i++) {
             listItems.add(simview.flock.get(i).uuid + ": " + simview.flock.get(i).aggro);
         }

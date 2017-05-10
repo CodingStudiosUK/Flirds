@@ -229,10 +229,12 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             }
         }
         for (int i = 0; i < POPULATION_NEW; i++){ //Pick two (probably) different Flirds and breed them
-            Flird f1 = breedPool.get(inte(random(0, breedPool.size()-1)));
-            breedPool.remove(f1); //Each Flird can only breed once (or 10 times)
-            Flird f2 = breedPool.get(inte(random(0, breedPool.size()-1)));
-            breedPool.remove(f2); //Each Flird can only breed once (or 10 times)
+            int tmp = inte(random(0, breedPool.size()-1));
+            Flird f1 = breedPool.get(tmp);
+            breedPool.remove(tmp); //Each Flird can only breed once (or 10 times)
+            tmp = inte(random(0, breedPool.size()-1));
+            Flird f2 = breedPool.get(tmp);
+            breedPool.remove(tmp); //Each Flird can only breed once (or 10 times)
             flock.add(new Flird(this, f1, f2));
         }
     }
