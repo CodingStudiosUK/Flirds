@@ -1,14 +1,14 @@
 package com.codingstudiosuk.flirds;
 
 import android.graphics.Canvas;
-
-import java.util.Comparator;
+import android.graphics.Paint;
+import android.support.annotation.NonNull;
 
 class Flird extends Entity implements Comparable<Flird>{
 
     int uuid;
     private boolean a = false, d = false;
-
+    Paint fillHead = new Paint(0);
     private float dir = v.random(0, 360);
     private float health = 1f;
     float speedMove;
@@ -26,14 +26,15 @@ class Flird extends Entity implements Comparable<Flird>{
     private int numConflicts = 0, timeAlive = 0;
 
     @Override
-    public int compareTo(Flird f){
+    public int compareTo(@NonNull Flird f){
 
-        return (int)f.aggro-(int)aggro;
+        return f.fitness()-fitness();
     }
 
     Flird(ViewSim s){
         super(s);
-        fill.setARGB(255, 75, 0, 75);
+        fillMain.setARGB(255, 150, 75, 0);
+        fillHead.setARGB(255, 100, 50, 0);
         for (int i = 0; i < 8; i++){
             dna[i] = (byte)v.random(-128,127);
         }
@@ -45,12 +46,12 @@ class Flird extends Entity implements Comparable<Flird>{
             }
         }
         getCodes();
-        //isSafe();
     }
 
     Flird(ViewSim s, Flird a, Flird b){
         super(s);
-        fill.setARGB(255, 150, 75, 0);
+        fillMain.setARGB(255, 150, 75, 0);
+        fillHead.setARGB(255, 100, 50, 0);
         for(int i = 0; i < 8; i++){
             float t = v.random(0,1);
             dna[i] = t < 0.1?(byte)v.random(-128,127):(t < 0.55?a.dna[i]:b.dna[i]);
@@ -73,25 +74,7 @@ class Flird extends Entity implements Comparable<Flird>{
             dna[v.code[4][2]] = (byte)v.random(-128,127);
         }
         getCodes();
-        isSafe();
     }
-
-    private void isSafe(){
-        while(true) {
-            boolean safe = true;
-            for (int i = 0; i < v.flock.size(); i++) {
-                Flird f = v.flock.get(i);
-                if (dist(f) < size + f.size) {
-                    safe = false;
-                    break;
-                }
-            }
-            if(safe){break;}
-            pos = new Vector(v.random(0, v.width), v.random(0, v.height));
-        }
-    }
-
-
 
     private Flird(ViewSim s, Flird a, Flird b, float x, float y) {
         this(s, a, b);
@@ -121,7 +104,7 @@ class Flird extends Entity implements Comparable<Flird>{
         return v.map(dna[v.code[n][0]]^dna[v.code[n][1]]^dna[v.code[n][2]],-128,127,min,max);
     }
 
-    void run(){
+    void run(Canvas c){
         if (v.frameCount % Math.ceil(intel) == 0) {
             target();
             calculate();
@@ -130,6 +113,8 @@ class Flird extends Entity implements Comparable<Flird>{
         movement();
         interact();
         if(mateCoolDown>0) mateCoolDown--;
+        timeAlive++;
+        display(c);
     }
 
     private void target() {
@@ -137,8 +122,7 @@ class Flird extends Entity implements Comparable<Flird>{
         closePred = null;
         closePrey = null;
         closeMate = null;
-        for (int i = 0; i < v.flock.size(); i++) {
-            Flird f = v.flock.get(i);
+        for (Flird f : v.flock) {
             float aggroDif = f.aggro - aggro;
             if (aggroDif > 5) {
                 if (((closePred == null || closePred.dead) || dist(f) < dist(closePred)) && f != this) {
@@ -155,9 +139,9 @@ class Flird extends Entity implements Comparable<Flird>{
             }
         }
         if (type != 2){
-            for (int i = 0; i < v.plants.size(); i++) {
-                if ((closePrey == null || closePrey.dead) || dist(v.plants.get(i)) < dist(closePrey)) {
-                    closePrey = v.plants.get(i);
+            for (Plant p : v.plants) {
+                if ((closePrey == null || closePrey.dead) || dist(p) < dist(closePrey)) {
+                    closePrey = p;
                 }
             }
         }
@@ -267,9 +251,9 @@ class Flird extends Entity implements Comparable<Flird>{
         health -= hunger;
         if (health <= 0){
             dead = true;
-            dropFood();
         }
-        fill.setARGB((int)v.map(health,0,1,0,255), 150, 75, 0);
+        fillMain.setARGB((int)v.map(health,0,1,0,255), 150, 75, 0);
+        fillHead.setARGB((int)v.map(health,0,1,0,255), 100, 50, 0);
         for (int i = 0; i < v.flock.size(); i++){
             Flird f = v.flock.get(i);
             if (dist(f) <= size+f.size && this != f){
@@ -283,26 +267,26 @@ class Flird extends Entity implements Comparable<Flird>{
         }
     }
 
-    private void dropFood(){
+    void dropFood(){
         int ranAmount = v.inte(v.random(1, 10));
         for(int i = 0; i < ranAmount; i++) {
             v.plants.add(new Plant(v, pos.x + v.random(-v.width * 0.05f, v.width * 0.05f), pos.y + v.random(-v.width * 0.05f, v.width * 0.05f), size/ranAmount+v.random(-1f, 1f)));
         }
     }
 
-    void display(Canvas c){
+    private void display(Canvas c){
         Vector face = new Vector(size/2, 0);
         face.rotate(dir);
         face.add(pos);
-        c.drawCircle(pos.x, pos.y, size, fill);
-        c.drawCircle(face.x,face.y,size/2,v.black);//Flird
+        c.drawCircle(pos.x, pos.y, size, fillMain);
+        c.drawCircle(face.x,face.y,size/2,fillHead);//Flird
     }
 
     private float sig(float val) {
         return (float)(1/(1+Math.pow((float)Math.E, -(val*0.8f)))); //To do: map sig functions to find the most effective
     }
 
-    float fitness(){
-        return v.constrain(timeAlive, 0, 180)/60+numConflicts*2;
+    private int fitness(){
+        return v.inte(v.constrain(timeAlive, 0, 180)/60+numConflicts*2);
     }
 }

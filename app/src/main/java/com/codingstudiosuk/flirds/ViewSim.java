@@ -1,7 +1,6 @@
 package com.codingstudiosuk.flirds;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
@@ -10,13 +9,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
 
 public class ViewSim extends View { //The canvas used to draw the flirds
+
+    final int POPULATION_NEW = 100;
+    final int POPULATION_BUFFER = 20;
 
     private Handler h; //Used for frames
     public Paint black = new Paint(0); //Black (to draw black stuff)
@@ -25,7 +24,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
     ActivitySimulation mainActivity; //A reference to the main activity
     public Random random = new Random();
 
-    public ArrayList<Flird> flock = new ArrayList<Flird>(); //Create the flirds and plants arraylist
+    public ArrayList<Flird> flock = new ArrayList<>(); //Create the flirds and plants arraylist
     public ArrayList<Plant> plants = new ArrayList<>();
 
     public int width = 1, height = 1, diag; //Some integers (diag is the diagonal length)
@@ -57,7 +56,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
                     code[i][2] = inte(random(0, 8));
                 }
             }
-            for (int i = 0; i < 120; i++) { //Create a bunch of new Flirds and plants
+            for (int i = 0; i < POPULATION_NEW; i++) { //Create a bunch of new Flirds and plants
                 flock.add(new Flird(this));
             }
             for (int i = 0; i < inte(random(75, 150)); i++) {
@@ -67,9 +66,9 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             black.setARGB(255, 0, 0, 0);
             black.setTextSize(50);
 
-            for(int i = 0; i < rings.length; i++){
-                rings[i].setStyle(Paint.Style.STROKE);
-                rings[i].setStrokeWidth(width*0.008f);
+            for (Paint ring : rings) {
+                ring.setStyle(Paint.Style.STROKE);
+                ring.setStrokeWidth(width * 0.008f);
             }
             rings[0].setARGB(255, 250, 175, 50);
             rings[1].setARGB(255, 160, 180, 180);
@@ -98,15 +97,13 @@ public class ViewSim extends View { //The canvas used to draw the flirds
     };
 
     protected void onDraw(Canvas c) { //Called every 60th (ish) of a second
-        //Bitmap unscaled = Bitmap.createBitmap(1920, 1080, Bitmap.Config.ARGB_8888);
-        //Canvas c = new Canvas(unscaled);
-        for (int i = 0; i < plants.size(); i++) { //Run the plants
-            plants.get(i).run();
-            plants.get(i).display(c);
+        for (int i = 0; i < plants.size(); i++){
+            Plant p = plants.get(i); //Run the plants
+            p.run(c);
         }
-        for (int i = 0; i < flock.size(); i++) { //Fun the flirds
-            flock.get(i).run();
-            flock.get(i).display(c);
+        for (int i = 0; i < flock.size(); i++){
+            Flird f = flock.get(i); //Run the flirds
+            f.run(c);
         }
 //        Draw rings on best Flirds
         for(int i = 0; i < 3; i++) {
@@ -119,11 +116,12 @@ public class ViewSim extends View { //The canvas used to draw the flirds
 
         for (int i = flock.size()-1; i > -1; i--) { //Remove dead flirds
             if (flock.get(i).dead) {
+                flock.get(i).dropFood();
                 if(flock.get(i)==selected){
                     selected = null;
                 }
                 flock.remove(i);
-                if(flock.size() == 20){
+                if(flock.size() == POPULATION_BUFFER){
                     breed();
                 }
             }
@@ -140,7 +138,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         frameFPS++; //Increment counters
         frameCount++;
         if(this.getVisibility() == View.INVISIBLE){
-            sort();
+            Collections.sort(flock);
         }
         if (timeFPS + 1000 < SystemClock.elapsedRealtime()) { //Once a second update the debug stuff
             float min[] = {101,101,101,101,101};
@@ -169,7 +167,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             for(int i = 0; i < averages.length; i++){
                 averages[i]/=flock.size();
             }
-            sort();
+            Collections.sort(flock);
             mainActivity.addItems(this);
             Arrays.sort(aggroRange); //Sort the aggros, for median, LQ and UQ
             mainActivity.debugInfo[0] = "FPS: "+fps; //Set averages
@@ -216,12 +214,8 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         return ((n-minOld)/rangeOld*rangeNew)+minNew;
     }
     public float constrain(float n, float min, float max){ //Constrain a value to a range
-        if (n < min){
-            n = min;
-        }
-        if (n > max){
-            n = max;
-        }
+        if (n < min) n = min;
+        if (n > max) n = max;
         return n;
     }
     public void breed(){ //Called if the population gets too low
@@ -229,44 +223,18 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         pgenLength = numGens%5==0?pgenLength:secondsElapsed/(numGens%5);
         secondsElapsed = numGens%5==0?0:secondsElapsed;
         ArrayList<Flird> breedPool = new ArrayList<>(); //Create a breeding pool
-        ArrayList<Flird> newFlock = new ArrayList<>(); //New flock
-        for (int j = 0; j < 10; j++){ //Add each flird 10 times, gives each Flird an equal chance of breeding irrelevant of location in the arraylist
+        for (int j = 0; j < POPULATION_NEW*2; j++){ //Add each flird multiple times, gives each Flird an equal chance of breeding irrelevant of location in the arraylist
             for (int i = 0; i < flock.size(); i++){
                 breedPool.add(flock.get(i));
             }
         }
-        for (int i = 0; i < breedPool.size()/2; i++){ //Pick two (probably) different Flirds and breed them
-            int f1 = inte(random(0, breedPool.size()-1));
-            int f2 = inte(random(0, breedPool.size()-1));
-            while (f2 == f1){
-                f2 = inte(random(0, breedPool.size()-1));
-            }
-            newFlock.add(new Flird(this, breedPool.get(f1), breedPool.get(f2)));
+        for (int i = 0; i < POPULATION_NEW; i++){ //Pick two (probably) different Flirds and breed them
+            Flird f1 = breedPool.get(inte(random(0, breedPool.size()-1)));
             breedPool.remove(f1); //Each Flird can only breed once (or 10 times)
-            breedPool.remove(f2>f1?f2-1:f2); //Don't remove the wrong one!
+            Flird f2 = breedPool.get(inte(random(0, breedPool.size()-1)));
+            breedPool.remove(f2); //Each Flird can only breed once (or 10 times)
+            flock.add(new Flird(this, f1, f2));
         }
-        for(int i = 0; i < newFlock.size(); i++) {
-            flock.add(newFlock.get(i)); //Add the new flock to the existing flock
-        }
-    }
-    public void sortOLD(){ //NEEDS TO BE FIXED
-        List<Flird> unsorted = flock;
-        ArrayList<Flird> sorted = new ArrayList<>();
-        Flird best = unsorted.get(0);
-        for(int i = 0; i < unsorted.size(); i++){
-            for(int j = i+1; j < unsorted.size(); j++){
-                Flird f = unsorted.get(j);
-
-                if(f.fitness() > best.fitness()){
-                    best = f;
-                }
-            }
-            sorted.add(best);
-        }
-        flock = sorted;
     }
 
-    public void sort(){
-        Collections.sort(flock);
-    }
 }

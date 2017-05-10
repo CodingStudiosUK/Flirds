@@ -8,34 +8,19 @@ class Plant extends Entity {
         super(s);
         aggro = -10;
         size = v.inte(v.random(5, 25));
-        fill.setARGB(255, 75, 150, 0);
-        isSafe();
+        fillMain.setARGB(255, 75, 150, 0);
     }
     Plant(ViewSim s, float x, float y, float si){
         super(s);
         aggro = -10;
         size = si;
-        fill.setARGB(255, 200, 120, 0);
+        fillMain.setARGB(255, 100, 125, 0);
         pos.x = x; pos.y = y;
     }
 
-    private void isSafe() {
-        while(true) {
-            boolean safe = true;
-            for (int i = 0; i < v.plants.size(); i++) {
-                Plant f = v.plants.get(i);
-                if (dist(f) < size + f.size) {
-                    safe = false;
-                    break;
-                }
-            }
-            if(safe){break;}
-            pos = new Vector(v.random(0, v.width), v.random(0, v.height));
-        }
-    }
-
-    void run(){
+    void run(Canvas c){
         interact();
+        display(c);
     }
 
     private void interact(){
@@ -52,7 +37,7 @@ class Plant extends Entity {
     }
 
     void display(Canvas c){
-        c.drawCircle(pos.x, pos.y, size, fill);
+        c.drawCircle(pos.x, pos.y, size, fillMain);
     }
 
 }

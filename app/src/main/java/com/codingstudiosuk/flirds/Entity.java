@@ -2,16 +2,14 @@ package com.codingstudiosuk.flirds;
 
 import android.graphics.Paint;
 
-import java.util.Comparator;
-
 class Entity {
 
-    Vector pos;
     transient ViewSim v;
+    Vector pos;
+    Paint fillMain = new Paint(0);
     float aggro;
     boolean dead = false;
     float size;
-    Paint fill = new Paint(0);
 
     Entity(ViewSim s) {
         v = s;

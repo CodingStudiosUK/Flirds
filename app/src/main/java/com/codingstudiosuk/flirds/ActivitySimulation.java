@@ -20,8 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//getSupportActionBar().setTitle(R.string.app_name);                 **
-
 public class ActivitySimulation extends AppCompatActivity {
 
     private Button buttonFlirdList;
@@ -31,7 +29,6 @@ public class ActivitySimulation extends AppCompatActivity {
     ViewFlird flirdview;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    int clickCounter = 0;
     private TextView debug_text, debug_dna;
     Flird selected = null;
     String[] debugInfo = {"FPS: 0", "Population: 0", "Best flird: 23",
@@ -160,7 +157,7 @@ public class ActivitySimulation extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) { //Called when you tap a menu item
         int id = item.getItemId();
         if (mDrawerToggle.onOptionsItemSelected(item)) { //Opens the nav drawer when you tap the three lines top left
-            mDrawerLayout.closeDrawer(Gravity.RIGHT);
+            mDrawerLayout.closeDrawer(Gravity.END);
             return true;
         }
         switch (id) { //Used to open the relevant activity
@@ -170,12 +167,12 @@ public class ActivitySimulation extends AppCompatActivity {
             case R.id.mitem_help:
                 activityStart(ActivityAbout.class);
                 break;
-            case R.id.mitem_infop:
-                if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+            case R.id.mitem_info:
+                if(mDrawerLayout.isDrawerOpen(Gravity.END)){
+                    mDrawerLayout.closeDrawer(Gravity.END);
                 }else{
-                    mDrawerLayout.openDrawer(Gravity.RIGHT);
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    mDrawerLayout.openDrawer(Gravity.END);
+                    mDrawerLayout.closeDrawer(Gravity.START);
                 }
             default:
                 System.out.println("Error.");
