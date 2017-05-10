@@ -31,6 +31,12 @@ public class ActivitySimulation extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     private TextView debug_text, debug_dna;
     Flird selected = null;
+    String[][] debugText = {{"Framerate","Population (Current)", "Population (Total)", "Generation Number", "Generation Length", "Best flird",
+                            "Speed (Move)","Speed (Turn)","Hunger","Size","Aggro",
+                            "Speed (Move)", "  Range"},
+                            {"0", "0", "0", "0", "0", "0",
+                            "0","0","0","0","0",
+                            "0", "0"}};
     String[] debugInfo = {"FPS: 0", "Population: 0", "Best flird: 23",
             "No. of generations: 0", "\nAve. speedMove: 0\n (0-0)", "\nAve. moveTurn: 0\n (0-0)", "\nAve. hunger: 0\n (0-0)",
             "\nAve. size: 0\n (0-0)", "\nAve. aggro: 0 (0)\n (0-0) 0 \n (0-0) 0"}; //String array used to display basic debugging info
@@ -42,13 +48,12 @@ public class ActivitySimulation extends AppCompatActivity {
         setContentView(R.layout.activity_simulation); //Set the layout to be used
 
         simview = (ViewSim) findViewById(R.id.view_sim_view); //Get the View object
-        simview.mainActivity = this; //Pass a reference to this activity
+        simview.mAct = this; //Pass a reference to this activity
         flirdview = (ViewFlird) findViewById(R.id.view_flird_view);
         flirdview.mainActivity = this;
         flirdview.setVisibility(View.INVISIBLE);
 
         debug_text = (TextView) findViewById(R.id.debug_basic); //Grab some textviews
-        debug_dna = (TextView) findViewById(R.id.text_sim_dna);
 
         //Init button
         buttonFlirdList = (Button) findViewById(R.id.button_sim_toggledebug);
@@ -63,7 +68,7 @@ public class ActivitySimulation extends AppCompatActivity {
                     addItems(simview);
                 }
                 setNavDrawer();
-                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                mDrawerLayout.closeDrawer(Gravity.END);
 
             }
         });
@@ -89,7 +94,7 @@ public class ActivitySimulation extends AppCompatActivity {
                 flirdview.setVisibility(View.VISIBLE);
                 flirdview.setFlird(selected);
                 setNavDrawer();
-                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                mDrawerLayout.closeDrawer(Gravity.END);
             }
         });
 
@@ -97,12 +102,23 @@ public class ActivitySimulation extends AppCompatActivity {
 
     public void setNavDrawer() { //Init navigation drawer (used to display debugging stuff
         if (simview.getVisibility() == View.VISIBLE) {
-            String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
-            t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
+            String t = "GENERAL\n";
+            for (int i = 0; i < 6; i++){
+                t += debugText[0][i]+": "+debugText[1][i]+"\n";
+            }
+            t += "\nCHROMOSOMES\n";
+            for (int i = 6; i < 11; i++){
+                t += debugText[0][i]+": "+debugText[1][i]+"\n";
+            }
+            t += "\nAVERAGE PROPERTIES\n";
+            for (int i = 11; i < 13; i+=2){
+                t += debugText[0][i]+": "+debugText[1][i]+"\n";
+                t += debugText[0][i+1]+": "+debugText[1][i+1]+"\n";
+                t += "\n";
+            }
+//            String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
+//            t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
             debug_text.setText(t); //Set the text of the textview
-            t = Arrays.toString(advancedDebugInfo); //Convert debugInfo array to a string
-            t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
-            debug_dna.setText(t); //Set the text of the textview
         } else {
             debug_text.setText(selected == null ? "None selected" : selected.uuid + "\n" + selected.aggro);
         }
