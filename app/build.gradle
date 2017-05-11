@@ -44,4 +44,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
     testCompile 'junit:junit:4.12'
+    compile files('src/main/jars/gson-2.8.0.jar')
 }

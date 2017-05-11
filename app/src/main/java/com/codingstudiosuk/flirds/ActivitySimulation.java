@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,13 +17,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class ActivitySimulation extends AppCompatActivity {
 
     private Button buttonFlirdList;
+
+    boolean exit = false;
+    Timer timer = new Timer();
+
+//    Intent activity = new Intent(MyActivity.this,NextActivity.class);
+//    activity.putExtra("myObject", new Gson().toJson(myobject));
+//    startActivity(activity);
+
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     ViewSim simview;
@@ -116,8 +130,6 @@ public class ActivitySimulation extends AppCompatActivity {
                 t += debugText[0][i+1]+": "+debugText[1][i+1]+"\n";
                 t += "\n";
             }
-//            String t = Arrays.toString(debugInfo); //Convert debugInfo array to a string
-//            t = t.substring(1, t.length() - 1).replaceAll(",", "\n"); //Each element is on a new line
             debug_text.setText(t); //Set the text of the textview
         } else {
             debug_text.setText(selected == null ? "None selected" : selected.uuid + "\n" + selected.aggro);
@@ -217,6 +229,34 @@ public class ActivitySimulation extends AppCompatActivity {
             listItems.add(simview.flock.get(i).uuid + ": " + simview.flock.get(i).aggro);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(mDrawerLayout.isDrawerOpen(Gravity.START) || mDrawerLayout.isDrawerOpen(Gravity.END)){
+                mDrawerLayout.closeDrawer(Gravity.START);
+                mDrawerLayout.closeDrawer(Gravity.END);
+            }else if(simview.getVisibility() == View.INVISIBLE){
+                simview.setVisibility(View.VISIBLE);
+                flirdview.setVisibility(View.INVISIBLE);
+            }else{
+                Toast.makeText(getApplicationContext(), (CharSequence)"Press back again to exit.", Toast.LENGTH_LONG).show();
+                if(!exit) {
+                    exit = true;
+                    timer.schedule(new TimerTask() {
+                        public void run() {
+                            System.out.print("IT WORKEDSDFJLADS");
+                            exit = false;
+                        }
+                    }, Toast.LENGTH_LONG*1000);
+                }else{
+                    System.exit(0); //Need to save stuff
+                }
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
