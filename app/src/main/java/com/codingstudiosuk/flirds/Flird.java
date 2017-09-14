@@ -54,7 +54,13 @@ class Flird extends Entity implements Comparable<Flird>{
         fillHead.setARGB(255, 100, 50, 0);
         for(int i = 0; i < 8; i++){
             float t = v.random(0,1);
-            dna[i] = t < 0.1?(byte)v.random(-128,127):(t < 0.55?a.dna[i]:b.dna[i]);
+            if(t < 0.1) {
+                dna[i] = (byte)v.random(-128, 127);
+            }else if(t < 0.55){
+                dna[i] = (byte)(a.dna[i]+v.random(-2, 2));
+            }else{
+                dna[i] = (byte)(b.dna[i]+v.random(-2, 2));
+            }
         }
         for (int j = 0; j < network[0].length; j++) {
             for (int k = 0; k < network[0][0].length; k++) {

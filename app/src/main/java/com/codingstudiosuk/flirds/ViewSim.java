@@ -200,7 +200,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             timeFPS = SystemClock.elapsedRealtime();
             secondsElapsed++;
         }
-        h.postDelayed(r, 100/60); //Call me again in 100/60ms
+        h.postDelayed(r, 1000/60); //Call me again in 100/60ms
     }
     public float random(float max) { //Pick a random number
         return random(0, max);
