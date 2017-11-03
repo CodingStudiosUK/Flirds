@@ -392,7 +392,7 @@ class Vector {
 
 
     /**
-     * Rotate the vector to a different angle (added by us).
+     * Rotate the vector to a different angle (added by CSUK).
      */
     public void rotate(float theta){
         theta = (float)((theta/360)*(Math.PI*2));

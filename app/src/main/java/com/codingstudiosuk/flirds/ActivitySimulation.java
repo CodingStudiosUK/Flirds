@@ -28,7 +28,7 @@ import java.util.logging.LogRecord;
 
 public class ActivitySimulation extends AppCompatActivity {
 
-    private Button buttonFlirdList;
+    private Button buttonFlirdList, buttonFollowBest;
 
     boolean exit = false;
     Timer timer = new Timer();
@@ -86,6 +86,14 @@ public class ActivitySimulation extends AppCompatActivity {
 
             }
         });
+        buttonFollowBest = (Button) findViewById(R.id.button_sim_followbest);
+        buttonFollowBest.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){ //Follow the best flird!
+                simview.mScaleFactor = 0.4f;
+                simview.followBest = !simview.followBest;
+            }
+        });
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout); //Get the drawerLayout (used to open and close nav drawer)
         mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
         setNavDrawer();
@@ -115,7 +123,7 @@ public class ActivitySimulation extends AppCompatActivity {
     }
 
     public void setNavDrawer() { //Init navigation drawer (used to display debugging stuff
-        if (simview.getVisibility() == View.VISIBLE) {
+        if (simview.getVisibility() == View.VISIBLE) { //The debugigng stuff
             String t = "GENERAL\n";
             for (int i = 0; i < 6; i++){
                 t += debugText[0][i]+": "+debugText[1][i]+"\n";
@@ -204,7 +212,7 @@ public class ActivitySimulation extends AppCompatActivity {
                     mDrawerLayout.closeDrawer(Gravity.START);
                 }
             default:
-                System.out.println("Error.");
+                System.out.println("Error."); //Should use LOG for this...
                 break;
         }
         return true;
@@ -246,7 +254,6 @@ public class ActivitySimulation extends AppCompatActivity {
                     exit = true;
                     timer.schedule(new TimerTask() {
                         public void run() {
-                            System.out.print("IT WORKEDSDFJLADS");
                             exit = false;
                         }
                     }, Toast.LENGTH_LONG*1000);
