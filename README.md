@@ -27,7 +27,7 @@ This project is still early in development so you can expect many changes in the
 An APK file should be released in the next couple of weeks however it won't be representative of the final project.
 
 
-_How to support_
+# _How to support_
 Feel free to post new ideas and possible changes, all are welcome.
 
 (C) CodingStudiosUK Team
