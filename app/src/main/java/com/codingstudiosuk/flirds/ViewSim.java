@@ -131,7 +131,8 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         }
         for (int i = 0; i < flock.size(); i++){
             Flird f = flock.get(i); //Run the flirds
-            f.run(c);
+            f.threadRun();
+            f.mainThread(c);
         }
 //        Draw rings on best Flirds
         for(int i = 0; i < 3; i++) {

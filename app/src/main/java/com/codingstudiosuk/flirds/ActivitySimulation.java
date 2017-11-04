@@ -91,6 +91,8 @@ public class ActivitySimulation extends AppCompatActivity {
             public void onClick(View v){ //Follow the best flird!
                 simview.mScaleFactor = 0.4f;
                 simview.followBest = !simview.followBest;
+                simview.mPosX = 0;
+                simview.mPosY = 0;
             }
         });
 
