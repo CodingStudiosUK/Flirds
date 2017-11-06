@@ -25,6 +25,8 @@ class Flird extends Entity implements Comparable<Flird>{
     transient private Entity closePrey, closeMate, closePred, closeAll;
     private int numConflicts = 0, timeAlive = 0;
 
+    private int frameOffset = 0;
+
     @Override
     public int compareTo(@NonNull Flird f){
 
@@ -46,6 +48,7 @@ class Flird extends Entity implements Comparable<Flird>{
             }
         }
         getCodes();
+        frameOffset = (int)v.random(20);
     }
 
     Flird(ViewSim s, Flird a, Flird b){
@@ -110,17 +113,27 @@ class Flird extends Entity implements Comparable<Flird>{
         return v.map(dna[v.code[n][0]]^dna[v.code[n][1]]^dna[v.code[n][2]],-128,127,min,max);
     }
 
-    void run(Canvas c){
+    public void threadRun(){
         if (v.frameCount % Math.ceil(intel) == 0) {
             target();
             calculate();
         }
         decide();
+        slowUpdate();
+    }
+
+    void mainThread(Canvas c){
+
         movement();
         interact();
         if(mateCoolDown>0) mateCoolDown--;
         timeAlive++;
         display(c);
+    }
+
+    private void slowUpdate(){
+        fillMain.setARGB((int)v.map(health,0,1,0,255), 150, 75, 0);
+        fillHead.setARGB((int)v.map(health,0,1,0,255), 100, 50, 0);
     }
 
     private void target() {
@@ -258,8 +271,6 @@ class Flird extends Entity implements Comparable<Flird>{
         if (health <= 0){
             dead = true;
         }
-        fillMain.setARGB((int)v.map(health,0,1,0,255), 150, 75, 0);
-        fillHead.setARGB((int)v.map(health,0,1,0,255), 100, 50, 0);
         for (int i = 0; i < v.flock.size(); i++){
             Flird f = v.flock.get(i);
             if (dist(f) <= size+f.size && this != f){

@@ -124,14 +124,15 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             c.translate(mPosX, mPosY);
         }
         c.scale(mScaleFactor, mScaleFactor);
-        c.drawText(""+mScaleFactor+" : "+mPosX+" : "+mPosY+" : "+(width/4-(width*mScaleFactor)), (1/mScaleFactor)*(50-mPosX), (1/mScaleFactor)*(50-mPosY), black);
+        //c.drawText(""+mScaleFactor+" : "+mPosX+" : "+mPosY+" : "+(width/4-(width*mScaleFactor)), (1/mScaleFactor)*(50-mPosX), (1/mScaleFactor)*(50-mPosY), black);
         for (int i = 0; i < plants.size(); i++){
             Plant p = plants.get(i); //Run the plants
             p.run(c);
         }
         for (int i = 0; i < flock.size(); i++){
             Flird f = flock.get(i); //Run the flirds
-            f.run(c);
+            f.threadRun();
+            f.mainThread(c);
         }
 //        Draw rings on best Flirds
         for(int i = 0; i < 3; i++) {
