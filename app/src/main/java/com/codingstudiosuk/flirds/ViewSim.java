@@ -26,14 +26,13 @@ public class ViewSim extends View { //The canvas used to draw the flirds
     private Handler h; //Used for frames
     public Paint black = new Paint(0); //Black (to draw black stuff)
     private Paint[] rings = {new Paint(0), new Paint(0), new Paint(0), new Paint(0)};
-    private boolean setup = true; //Make sure init function is only called once (damn you canvas)
     ActivitySimulation mAct; //A reference to the main activity
     public Random random = new Random();
 
     public ArrayList<Flird> flock = new ArrayList<>(); //Create the flirds and plants arraylist
     public ArrayList<Plant> plants = new ArrayList<>();
 
-    public int width = 1, height = 1, diag; //Some integers (diag is the diagonal length)
+    public int width = -23, height = 1, diag; //Some integers (diag is the diagonal length)
 
     int num = 0, numGens = 0, secondsElapsed = 0, pgenLength = 0; //Some counters for timing and counting
     public long frameFPS, timeFPS, frameCount; //Used for counting frames/managing framerate and timing
@@ -55,7 +54,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
         frameCount = 0; //Reset some stuff
         frameFPS = 0;
         timeFPS = SystemClock.elapsedRealtime(); //Get the current time in epochs
-        if (setup) { //Only run once!
+        if (width==-23) { //Only run once!
             width = this.getWidth()*4; //Init some more variables
             height = this.getHeight()*4;
             mScaleFactor = 0.25f;
@@ -77,7 +76,7 @@ public class ViewSim extends View { //The canvas used to draw the flirds
             for (int i = 0; i < inte(random(75, 150)); i++) {
                 plants.add(new Plant(this));
             }
-            setup = false;
+            
             black.setARGB(255, 0, 0, 0);
             black.setTextSize(50);
 
