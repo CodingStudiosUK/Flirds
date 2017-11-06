@@ -10,9 +10,7 @@ public class FlirdRunner implements Runnable{
         for (Flird f : fs){
             try {
                 flockSegment.add(f);
-            }catch(java.lang.NullPointerException e){
-                continue;
-            }
+            }catch(java.lang.NullPointerException e){}
         }
     }
 
